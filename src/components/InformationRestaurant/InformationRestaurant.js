@@ -8,6 +8,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
 import GridContainer from "../Grid/GridContainer";
+import GridItem from "../Grid/GridItem";
 import Map from '../Map/Map'
 
 function createData(day, hours) {
@@ -28,7 +29,8 @@ export default function Details() {
     return (
         <div className="container">
             <p><b>Horarios</b><br/>
-            <GridContainer xs={12} sm={12} md={6}>
+            <GridContainer>
+            <GridItem xs={12} sm={12} md={6}>
                 <TableContainer component={Paper} variant="Standard">
                 <Table size="small" aria-label="a dense table">
                     <TableBody>
@@ -41,6 +43,7 @@ export default function Details() {
                     </TableBody>
                 </Table>
                 </TableContainer>
+            </GridItem>
             </GridContainer></p>
 
             <p><br/><b>Teléfonos</b>

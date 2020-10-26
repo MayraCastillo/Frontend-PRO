@@ -5,7 +5,7 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import SectionMenu from '../SectionMenu/SectionMenu';
+import SectionProducts from '../SectionProducts/SectionProducts';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,7 +47,7 @@ export default function SimpleAccordion() {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            <SectionMenu />
+            <SectionProducts />
           </Typography>
         </AccordionDetails>
       </Accordion>

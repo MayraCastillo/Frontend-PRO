@@ -2,11 +2,12 @@ import React from 'react';
 import GridItem from "../Grid/GridItem";
 import GridContainer from "../Grid/GridContainer";
 
-export default function SectionMenu() {
-  
+export default function SectionMenu(props) {
+    console.log(props);
     return(
-        <GridContainer xs={12}>
-            <GridItem xs={12}>
+        
+        <GridContainer>
+            <GridItem xs={12} sm={12} md={12}>
                 <div className="album py-5 bg-light">
 
                 <section className="text-center">

@@ -38,8 +38,8 @@ function createData(quantity, name, cost) {
 }
   
 const rows = [
-  createData(3, 'Menú del Día', 5000),
-  createData(2, 'Sancocho de Gallina', 23000),
+    createData(3, 'Menú del Día', 5000),
+    createData(2, 'Sancocho de Gallina', 23000),
 ];
 
 export default function OutlinedCard() {

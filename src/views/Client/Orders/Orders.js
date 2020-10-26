@@ -23,7 +23,7 @@ export default function Orders() {
         <Header />
         <main role="main" className="containerBase">
             <div className={classes.justify}>
-            <GridContainer xs={12} sm={12} md={12}>
+            <GridContainer>
                 <GridItem xs={12} sm={12} md={8}>
                     <Tabs />
                 </GridItem>

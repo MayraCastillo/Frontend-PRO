@@ -5,8 +5,10 @@ import Header from '../../../components/Header/Header';
 import Footer from '../../../components/Footer/Footer';
 import SectionRestaurants from "../../../components/SectionRestaurants/SectionRestaurants";
 
+const baseUrl =`http://localhost:8092/restaurantes`;
+
 export default function Orders() {
-  
+
     return(<>
         <Menu />
         <Header />
