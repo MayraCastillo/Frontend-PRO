@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 toast.configure()
-export default function UserProfile() {
+export default function AgregarPlato() {
   const classes = useStyles();
   
   const [nombrePlato, setNombrePlato] = React.useState("");

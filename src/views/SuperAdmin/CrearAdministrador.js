@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 toast.configure()
-export default function UserProfile() {
+export default function CrearAdministrador() {
   const classes = useStyles();
   
   const [nombrePlato, setNombrePlato] = React.useState("");
@@ -100,7 +100,7 @@ export default function UserProfile() {
   async function sendData() {
     
   if(validarExistenciaPlato == "Existe"){
-    toast.error('El plato ya existe');
+    toast.error('El usuario ya existe');
     
   
   }else{
@@ -108,7 +108,8 @@ export default function UserProfile() {
       var authOptions = {
         method: "POST",
         url: baseUrl,
-        data: {         
+        data: {
+         
           nombrePlato: nombrePlato,
           descPlato: descPlato,
           precioPlato: precioPlato,
@@ -116,7 +117,7 @@ export default function UserProfile() {
           ingredientesPlato: ingredientesPlato,
           statusPlato: statusPlato,
           cantidadPlato: cantidadPlato,
-          idRest:'1',          
+         
         },      
         json: true,
       };
@@ -125,7 +126,7 @@ export default function UserProfile() {
         .then(function(response) {
           //setLoading(false);
           
-          toast.success('Se agrego el plato');
+          toast.success('Se creo el usuario');
           //console.log("1")        
         })
         .catch(function(error) {
@@ -144,8 +145,8 @@ export default function UserProfile() {
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
           <Card>
-            <CardHeader color="primary">
-              <h4 className={classes.cardTitleWhite}>Crear un Plato</h4>
+            <CardHeader color="warning">
+              <h4 className={classes.cardTitleWhite}>Crear un Administrador</h4>
               <p className={classes.cardCategoryWhite}>Complete los campos</p>
             </CardHeader>
             <CardBody>
@@ -156,7 +157,7 @@ export default function UserProfile() {
                   margin="normal"
                   required
                   fullWidth
-                  label="Nombre del Plato"
+                  label="Nombre del Usuario"
                   variant="outlined"
                   onChange={(e) => setNombrePlato(e.target.value)}   
                   onBlur={validarExistencia}
@@ -170,7 +171,7 @@ export default function UserProfile() {
                   margin="normal"
                   required ="true"
                   fullWidth
-                  label="Descripción"
+                  label="Correo del Usuario"
                   variant="outlined"
                   onChange={(e) => setDescPlato(e.target.value)}                  
                 />                            
@@ -182,7 +183,7 @@ export default function UserProfile() {
                   margin="normal"
                   required
                   fullWidth
-                  label="Precio"
+                  label="Contraseña"
                   variant="outlined"
                   onChange={(e) => setPrecioPlato(e.target.value)}                  
                 />                            
@@ -194,7 +195,7 @@ export default function UserProfile() {
                   margin="normal"
                   required
                   fullWidth
-                  label="Categoria"
+                  label="Dirección"
                   variant="outlined"
                   onChange={(e) => setCategoriaPlato(e.target.value)}                  
                 />                            
@@ -205,7 +206,7 @@ export default function UserProfile() {
                   margin="normal"
                   required
                   fullWidth
-                  label="Ingredientes"
+                  label="Teléfono"
                   variant="outlined"
                   onChange={(e) => setIngredientesPlato(e.target.value)}                  
                 />                            
@@ -216,7 +217,7 @@ export default function UserProfile() {
                   margin="normal"
                   required
                   fullWidth
-                  label="Platos Producidos"
+                  label="Identificador del Restaurante"
                   variant="outlined"
                   onChange={(e) => setCantidadPlato(e.target.value)}                  
                 />                            
@@ -228,7 +229,7 @@ export default function UserProfile() {
       </GridContainer>
 
       <div className={classes.sendData}>
-        <Button onClick={sendData} variant="contained" color="primary">
+        <Button onClick={sendData} variant="contained" color="warning">
           Crear
         </Button>
       </div>

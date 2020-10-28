@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 toast.configure()
-export default function UserProfile() {
+export default function GestionPersonal() {
   const classes = useStyles();
   
   const [nombrePlato, setNombrePlato] = React.useState("");
@@ -108,7 +108,8 @@ export default function UserProfile() {
       var authOptions = {
         method: "POST",
         url: baseUrl,
-        data: {         
+        data: {
+         
           nombrePlato: nombrePlato,
           descPlato: descPlato,
           precioPlato: precioPlato,
@@ -116,7 +117,7 @@ export default function UserProfile() {
           ingredientesPlato: ingredientesPlato,
           statusPlato: statusPlato,
           cantidadPlato: cantidadPlato,
-          idRest:'1',          
+         
         },      
         json: true,
       };
@@ -145,7 +146,7 @@ export default function UserProfile() {
         <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader color="primary">
-              <h4 className={classes.cardTitleWhite}>Crear un Plato</h4>
+              <h4 className={classes.cardTitleWhite}>Crear un Empleado</h4>
               <p className={classes.cardCategoryWhite}>Complete los campos</p>
             </CardHeader>
             <CardBody>

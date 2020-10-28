@@ -20,7 +20,6 @@ import NotificationsPage from "views/Notifications/Notifications.js";
 import UpgradeToPro from "views/UpgradeToPro/UpgradeToPro.js";
 // core components/views for RTL layout
 import RTLPage from "views/RTLPage/RTLPage.js";
-import UserProfile2 from "views/UserProfile/UserProfile.js";
 
 const dashboardRoutes = [
   {
@@ -46,8 +45,15 @@ const dashboardRoutes = [
     icon: "content_paste",
     component: TableList,
     layout: "/admin"
+  }/*,
+  {
+    path: "/login",
+    name: "Login",
+    icon: LibraryBooks,
+    component: Login,
+    layout: "/admin"
   },
-   {
+  {
     path: "/icons",
     name: "Icons",
     rtlName: "الرموز",
@@ -55,8 +61,38 @@ const dashboardRoutes = [
     component: Icons,
     layout: "/admin"
   },
-  
-  
+  {
+    path: "/maps",
+    name: "Maps",
+    rtlName: "خرائط",
+    icon: LocationOn,
+    component: Maps,
+    layout: "/admin"
+  },
+  {
+    path: "/notifications",
+    name: "Notifications",
+    rtlName: "إخطارات",
+    icon: Notifications,
+    component: NotificationsPage,
+    layout: "/admin"
+  },
+  {
+    path: "/rtl-page",
+    name: "RTL Support",
+    rtlName: "پشتیبانی از راست به چپ",
+    icon: Language,
+    component: RTLPage,
+    layout: "/rtl"
+  },
+  {
+    path: "/upgrade-to-pro",
+    name: "Upgrade To PRO",
+    rtlName: "التطور للاحترافية",
+    icon: Unarchive,
+    component: UpgradeToPro,
+    layout: "/admin"
+  }*/
 ];
 
 export default dashboardRoutes;

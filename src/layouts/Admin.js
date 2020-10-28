@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect, useState} from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 // creates a beautiful scrollbar
 import PerfectScrollbar from "perfect-scrollbar";
@@ -11,18 +11,66 @@ import Footer from "components/Footer/Footer.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
 
-import routes from "routes.js";
+import routesJefeCocina from "routes.js";
+import routesMensajero from "routesMensajero.js";
+import routesAdministrador from "routesAdministrador.js"
+import routesSuperAdmin from "routesSuperAdmin.js"
 
 import styles from "assets/jss/material-dashboard-react/layouts/adminStyle.js";
 
 import bgImage from "assets/img/sidebar-2.jpg";
 import logo from "assets/img/reactlogo.png";
-
+import Login from "../views/Login/Login.js";
+import { PrivateRoute } from "../components/PrivateRoutes/PrivateRoute.js";
 let ps;
+var routes = [];
 
+switch (localStorage.getItem('token')) {
+  case '1':    
+    //routes = routesPrincipal;
+    
+    break;
+  case '2':
+    routes = routesJefeCocina;    
+    
+    break;
+  case '3':
+    routes = routesAdministrador;    
+    
+    break;
+  case '4': 
+    routes = routesSuperAdmin;       
+    break;
+  case '5': 
+    routes = routesMensajero;     
+    break;
+
+  default:
+    routes = routes;
+    break;
+}
 const switchRoutes = (
-  <Switch>
+  
+  <Switch> 
+        
     {routes.map((prop, key) => {
+      if (prop.layout === "/admin") {
+        return (
+          <PrivateRoute
+            path={prop.layout + prop.path}
+            component={prop.component}
+            key={key}
+          />
+        );
+      }
+    })}    
+    
+    <Route path="/login" component={Login} />
+    <Redirect from="/" to="/login" />
+  </Switch>
+);
+/*
+ {routes.map((prop, key) => {
       if (prop.layout === "/admin") {
         return (
           <Route
@@ -35,12 +83,12 @@ const switchRoutes = (
       return null;
     })}
     <Redirect from="/admin" to="/admin/dashboard" />
-  </Switch>
-);
 
+*/
 const useStyles = makeStyles(styles);
 
 export default function Admin({ ...rest }) {
+
   // styles
   const classes = useStyles();
   // ref to help us initialize PerfectScrollbar on windows devices
