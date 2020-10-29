@@ -29,18 +29,18 @@ const dashboardRoutes = [
     icon: Dashboard,
     component: DashboardPage,
     layout: "/admin"
-  },
+  },/*
   {
     path: "/user",
-    name: "Crear Personal",
+    name: "CREAR EMPLEADO",
     rtlName: "ملف تعريفي للمستخدم",
     icon: BubbleChart,
     component: Personal,
     layout: "/admin"
-  },
+  },*/
   {
     path: "/table",
-    name: "Gestion Personal",
+    name: "GESTIÓN DEL PERSONAL",
     rtlName: "قائمة الجدول",
     icon: "content_paste",
     component: GestionPersonal,

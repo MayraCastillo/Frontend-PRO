@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const baseUrl =`http://localhost:8080/platos/buscar-por-restaurante/2`
+const baseUrl =`http://localhost:8092/restaurantes/listar-empleados/1`
 
 
 export default function GestionPersonal() {
@@ -58,24 +58,43 @@ export default function GestionPersonal() {
   const [modalEliminar, setModalEliminar]=useState(false);
   //Formulario
   const [consolaSeleccionada, setConsolaSeleccionada]=useState({
-    nombrePlato: '',
-    descPlato: '',
-    precioPlato: '',
-    categoriaPlato: '',
-    ingredientesPlato: '',  
-    cantidadPlato: ''
+    nombre_empleado:'',
+    correo_empleado:'',
+    password_empleado:'',
+    telefono_empleado:'',
+    direccion_empleado:'',
+    img_empleado: 'vacio',
+    //status_empleado:'ACTIVATED',
+    idRol_empleado:'',
+    restaurante: 
+    {
+        idRest: 1
+    }
   })
+  const [categoria, setCategoria] = React.useState({
+    value: "-1",
+    label: "Categoría",
+  });
   const handleChange=e=>{
     const {name, value}=e.target;
     setConsolaSeleccionada(prevState=>({
       ...prevState,
-      [name]: value
+      [name]: value     
     }))
-    console.log(consolaSeleccionada);
+    //console.log(consolaSeleccionada);
+  }
+  function handleChangeCategoria(selectedOption) {
+    setCategoria(selectedOption);
+    setConsolaSeleccionada({...consolaSeleccionada, idRol_empleado:selectedOption.value})      
+   // setConsolaSeleccionada({idRol_empleado:categoria.value})   
   }
 
   const peticionPost=async()=>{
-    await Axios.post(baseUrl, consolaSeleccionada)
+    
+    console.log(consolaSeleccionada); 
+    //console.log(categoria);   
+    //setConsolaSeleccionada({idRol_empleado:categoria.value})     
+    await Axios.post(`http://localhost:8092/restaurantes/crear-empleado`, consolaSeleccionada)
     .then(response=>{
       setData(data.concat(response.data))
       abrirCerrarModalInsertar()
@@ -151,7 +170,7 @@ export default function GestionPersonal() {
     setConsolaSeleccionada(consola);
     (caso==='Editar')?abrirCerrarModalEditar():abrirCerrarModalEliminar()
   }
-  console.log(localStorage.getItem('rol'));
+  //console.log(localStorage.getItem('rol'));
   const peticionGet= async()=>{
     await Axios.get(baseUrl)
     .then(response=>{
@@ -167,24 +186,34 @@ useEffect(()=>{
 const bodyInsertar=(
   <div className={styles.modal}>
     <h3>Agregar Personal</h3>
-    <TextField variant="outlined"  name="nombre" className={styles.inputMaterial} label="Nombre" onChange={handleChange}/>
+    <TextField variant="outlined"  name="nombre_empleado" className={styles.inputMaterial} label="Nombre" onChange={handleChange}/>
     <br /><br />
-    <TextField variant="outlined"  name="empresa" className={styles.inputMaterial} label="Correo" onChange={handleChange}/>
+    <TextField variant="outlined"  name="correo_empleado" className={styles.inputMaterial} label="Correo" onChange={handleChange}/>
     <br /><br />
-    <TextField variant="outlined"  name="lanzamiento" className={styles.inputMaterial} label="Contraseña" onChange={handleChange}/>
+    <TextField variant="outlined"  name="password_empleado" className={styles.inputMaterial} label="Contraseña" onChange={handleChange}/>
     <br /><br />
-    <TextField variant="outlined" name="unidades_vendidas" className={styles.inputMaterial} label="Telefono" onChange={handleChange}/>
+    <TextField variant="outlined" name="telefono_empleado" className={styles.inputMaterial} label="Teléfono" onChange={handleChange}/>
+    <br /><br />
+    <TextField variant="outlined" name="direccion_empleado" className={styles.inputMaterial} label="Dirección" onChange={handleChange}/>
     <br /><br />
     <div className={classes.row}>
     Seleccione el Rol del Usuario:
-    <Select options={options} />     
-    </div>
+    <Select name="categoria"
+    value={categoria}
+    onChange={handleChangeCategoria}
+    options={options} />   
+    </div>    
     <br /><br />
     <div align="right">
-      <Button color="primary" onClick={()=>peticionPost()}>Insertar</Button>
+      <Button color="primary" 
+      
+      onClick={(e)=>peticionPost()}>
+        Insertar
+      </Button>
       <Button onClick={()=>abrirCerrarModalInsertar()}>Cancelar</Button>
     </div>
   </div>
+  
 )
 
 
@@ -238,20 +267,23 @@ const bodyEditar=(
              <Table>
                <TableHead>
                  <TableRow>
-                   <TableCell>Nombre del Plato</TableCell>
-                   <TableCell>Descripción</TableCell>
-                   <TableCell>Precio</TableCell>
-                   <TableCell>Acciones</TableCell>              
+                   <TableCell>Nombre del Empleado</TableCell>
+                   <TableCell>Correo</TableCell>
+                   <TableCell>Dirección</TableCell>
+                   <TableCell>Teléfono</TableCell> 
+                   <TableCell>Rol</TableCell>               
                  </TableRow>
                </TableHead>
                <TableBody>
                  {data.map(console=>(
                    <TableRow 
                    hover                   
-                   key={console.idPlato}>
-                     <TableCell>{console.nombrePlato}</TableCell>
-                     <TableCell>{console.descPlato}</TableCell>
-                     <TableCell>{console.precioPlato}</TableCell>
+                   key={console.idEmpleado}>                     
+                     <TableCell>{console.nombreEmpleado}</TableCell>
+                     <TableCell>{console.correoEmpleado}</TableCell>
+                     <TableCell>{console.direccionEmpleado}</TableCell>
+                     <TableCell>{console.telefonoEmpleado}</TableCell>
+                     <TableCell>{console.idRolEmpleado}</TableCell>
                      <TableCell>
                        <Edit onClick={() =>seleccionarConsola(console,'Editar')}/>
                        &nbsp;&nbsp;&nbsp;
@@ -264,16 +296,20 @@ const bodyEditar=(
                </TableBody>
              </Table>
            </TableContainer>
+           <GridItem xs={12} sm={12} md={12}>
               <Modal
                 open={modalInsertar}
                 onClose={abrirCerrarModalInsertar}>
                 {bodyInsertar}
               </Modal>
+              </GridItem>
+              <GridItem xs={12} sm={12} md={12}>
               <Modal
                 open={modalEditar}
                 onClose={abrirCerrarModalEditar}>
                 {bodyEditar}
-              </Modal>         
+              </Modal>
+              </GridItem>         
           </CardBody>
         </Card>
       </GridItem>

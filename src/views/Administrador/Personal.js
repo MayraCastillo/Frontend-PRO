@@ -141,12 +141,12 @@ export default function GestionPersonal() {
   }
   
   return (
-    <div>
-      <GridContainer>
+    <div>      
+      <GridContainer>        
         <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader color="primary">
-              <h4 className={classes.cardTitleWhite}>Crear un Empleado</h4>
+              <h4 className={classes.cardTitleWhite}>ADMINISTRADOR</h4>
               <p className={classes.cardCategoryWhite}>Complete los campos</p>
             </CardHeader>
             <CardBody>
@@ -157,7 +157,7 @@ export default function GestionPersonal() {
                   margin="normal"
                   required
                   fullWidth
-                  label="Nombre del Plato"
+                  label="Nombre del Empleado"
                   variant="outlined"
                   onChange={(e) => setNombrePlato(e.target.value)}   
                   onBlur={validarExistencia}
