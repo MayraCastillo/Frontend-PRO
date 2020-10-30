@@ -1,4 +1,6 @@
 import React from 'react';
+import Axios from "axios";
+import { useEffect, useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
@@ -18,7 +20,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SimpleAccordion() {
+  
   const classes = useStyles();
+  const idSelectRest = localStorage.getItem('idRestSelect');
 
   return (
     <div className={classes.root}>
@@ -32,7 +36,7 @@ export default function SimpleAccordion() {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            Aquí va el Menú del Día.
+            <SectionProducts idRestSelect={idSelectRest} categoria="plato-del-dia"/>
           </Typography>
         </AccordionDetails>
       </Accordion>
@@ -47,7 +51,7 @@ export default function SimpleAccordion() {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            <SectionProducts />
+            <SectionProducts idRestSelect={idSelectRest} categoria="plato-especial"/>
           </Typography>
         </AccordionDetails>
       </Accordion>
@@ -62,7 +66,7 @@ export default function SimpleAccordion() {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            Aquí van las Bebidas.
+            <SectionProducts idRestSelect={idSelectRest} categoria="bebida"/>
           </Typography>
         </AccordionDetails>
       </Accordion>
@@ -77,7 +81,7 @@ export default function SimpleAccordion() {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            Aquí van los Postres.
+            <SectionProducts idRestSelect={idSelectRest} categoria="postre"/>
           </Typography>
         </AccordionDetails>
       </Accordion>
