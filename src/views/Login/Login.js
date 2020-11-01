@@ -57,7 +57,7 @@ export default function SignIn() {
   const [estadoUser, setEstadoUser]=useState(false);
   const [estadopass, setEstadopass]=useState(false);
   const [errorDatos, setErrorDatos]=useState(false);
-  const URL='http://localhost:8095/restaurantes';
+  const URL='http://localhost:8095/roles';
 
 
   const  handleSubmit = event => {
@@ -84,8 +84,12 @@ export default function SignIn() {
         setEstadopass(false);
         setErrorDatos(true);
       }else{
+        //console.log(localStorage)
         localStorage.setItem('token', DataLogin.data.idRol);
+        localStorage.setItem('idUsuario', DataLogin.data.idUsuario);
+        localStorage.setItem('nombreRol', DataLogin.data.nombreRol);
         localStorage.setItem('correo', user);
+        console.log(localStorage.getItem('token'));
         setUser("");
         setPassword("");   
         window.location.href="/";   

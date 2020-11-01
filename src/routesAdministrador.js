@@ -21,6 +21,7 @@ import Maps from "views/Maps/Maps.js";
 import Personal from "views/Administrador/Personal.js"
 import GestionPersonal from "views/Administrador/GestionPersonal.js"
 
+
 const dashboardRoutes = [
   {
     path: "/dashboard",
@@ -29,7 +30,8 @@ const dashboardRoutes = [
     icon: Dashboard,
     component: DashboardPage,
     layout: "/admin"
-  },/*
+  },
+  /*
   {
     path: "/user",
     name: "CREAR EMPLEADO",
@@ -43,6 +45,7 @@ const dashboardRoutes = [
     name: "GESTIÓN DEL PERSONAL",
     rtlName: "قائمة الجدول",
     icon: "content_paste",
+    //component: GestionPersonal,
     component: GestionPersonal,
     layout: "/admin"
   }/*,
