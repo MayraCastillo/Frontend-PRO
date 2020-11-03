@@ -1,0 +1,90 @@
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #AF0B0B;
+  width: 100%;
+  min-height: 180px;
+  margin-top: 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.container-header {
+  background: url(https://holoesferica.com/wp-content/uploads/2012/01/Cenefa-81-1024x210.jpg) no-repeat fixed center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  width: 100%;
+  height: 180px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.restaurant-information {
+  background: rgba(0,0,0,0.7);
+  width: 80%;
+  display: flex;
+  align-items: center;
+}
+
+.restaurant-logo {
+  width: 130px;
+  height: 130px;
+  background: #0B82AF; 
+  float: left;
+}
+
+.restaurant-name {
+  width: 50%;
+  height: 70px;
+  background: #0B82AF;
+  margin-left: 15px;
+  float: left;
+}
+
+.containerBase {
+  width: 80%;
+  margin: auto;
+  margin-top: 10px;
+  padding: 20px;
+  border-style: solid;
+  text-align: center;
+}
+
+.footerBase {
+  position: absolute;
+  bottom: 0;
+  height: 4rem;
+}

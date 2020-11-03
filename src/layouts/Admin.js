@@ -11,7 +11,7 @@ import Footer from 'components/Footer/Footer.js';
 import Sidebar from 'components/Sidebar/Sidebar.js';
 import FixedPlugin from 'components/FixedPlugin/FixedPlugin.js';
 
-import routesJefeCocina from 'routes.js';
+import routesJefeCocina from 'routesJefeCocina.js';
 import routesMensajero from 'routesMensajero.js';
 import routesAdministrador from 'routesAdministrador.js';
 import routesSuperAdmin from 'routesSuperAdmin.js';
@@ -22,6 +22,7 @@ import bgImage from 'assets/img/sidebar-2.jpg';
 import logo from 'assets/img/reactlogo.png';
 import Login from '../views/Login/Login.js';
 import { PrivateRoute } from '../components/PrivateRoutes/PrivateRoute.js';
+import { Restaurant } from '@material-ui/icons';
 let ps;
 var routes = [];
 
@@ -31,7 +32,9 @@ switch (localStorage.getItem('token')) {
 		routes = routesMensajero;
 		break;
 	case '2':
+		//window.location.href = '/cliente';
 		routes = routesJefeCocina;
+		//routes = routesSuperAdmin;
 		break;
 	case '3':
 		routes = routesAdministrador;
