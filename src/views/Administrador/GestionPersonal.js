@@ -101,12 +101,14 @@ export default function GestionPersonal() {
 
 	const peticionPost = async () => {
 		console.log(consolaSeleccionada);
-		//console.log(categoria);
-		//setConsolaSeleccionada({idRol_empleado:categoria.value})
-		await Axios.post(
-			`http://localhost:8092/restaurantes/crear-empleado`,
-			consolaSeleccionada
-		).then((response) => {
+		var authOptions = {
+			method: 'POST',
+			url: `http://localhost:8092/restaurantes/crear-empleado`,
+			data: consolaSeleccionada,
+			json: true,
+		};
+		console.log(authOptions);
+		await Axios(authOptions).then((response) => {
 			setData(data.concat(response.data));
 			toast.success('Se agrego el Empleado, correctamente');
 			abrirCerrarModalInsertar();
