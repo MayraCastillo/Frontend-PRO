@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const baseUrl = `http://localhost:8091/platos`;
+const baseUrl = `http://localhost:8091/platos/buscar-por-status/1/ACTIVATED`;
 
 export default function GestionPlatos() {
 	const styles = useStyles();
@@ -112,24 +112,6 @@ export default function GestionPlatos() {
 				//setLoading(false);
 				//console.log("2")
 			});
-		/*
-    await Axios.put(baseUrlPut+consolaSeleccionada.idPlato, consolaSeleccionada)
-    .then(response=>{
-      var dataNueva=data;
-      dataNueva.map(consola=>{
-        if(consolaSeleccionada.idPlato===consola.idPlato){
-          consola.nombrePlato=consolaSeleccionada.nombrePlato;
-          consola.descPlato=consolaSeleccionada.descPlato;
-          consola.precioPlato=consolaSeleccionada.precioPlato;
-          consola.categoriaPlato=consolaSeleccionada.categoriaPlato;
-          consola.ingredientesPlato=consolaSeleccionada.ingredientesPlato;
-          consola.cantidadPlato=consolaSeleccionada.cantidadPlato;         
-        }
-      })
-      setData(dataNueva);
-      console.log(dataNueva);
-      abrirCerrarModalEditar();
-    })*/
 	};
 
 	const abrirCerrarModalEditar = () => {
@@ -229,7 +211,7 @@ export default function GestionPlatos() {
 			</div>
 		</div>
 	);
-	const peticionDelete = async () => {
+	const peticionDelete = async (nombre) => {
 		const baseUrlDelete =
 			`http://localhost:8091/platos/eliminar-plato` +
 			`/` +
@@ -242,6 +224,7 @@ export default function GestionPlatos() {
 				)
 			);
 			abrirCerrarModalEliminar();
+			toast.success('Se eliminó ' + nombre + ' del Menú');
 		});
 	};
 	const bodyEliminar = (
@@ -252,7 +235,10 @@ export default function GestionPlatos() {
 				Menú?
 			</p>
 			<div align="right">
-				<Button color="secondary" onClick={() => peticionDelete()}>
+				<Button
+					color="secondary"
+					onClick={() => peticionDelete(consolaSeleccionada.nombrePlato)}
+				>
 					Sí
 				</Button>
 				<Button onClick={() => abrirCerrarModalEliminar()}>No</Button>
