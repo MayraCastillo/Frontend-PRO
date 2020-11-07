@@ -18,7 +18,7 @@ import { useEffect, useState } from 'react';
 import { store } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
 import ReactNotification from 'react-notifications-component';
-const baseUrl = `http://localhost:8091/restaurantes/buscar-por-nit/1`;
+const baseUrl = `http://localhost:8092/restaurantes/buscar-por-nit/1`;
 const useStyles = makeStyles((theme) => ({
 	appBar: {
 		position: 'relative',
@@ -59,8 +59,10 @@ export default function ActualizarInfoRest() {
 	//Hook para capturar la data
 
 	const [dataOfClient, setDataOfClient] = useState({
+		nitRest: '',
 		nombreRest: '',
 		descRest: '',
+		telefonoRest: '',
 	});
 	function setInfo(field, value) {
 		setDataOfClient({ ...dataOfClient, [field]: value });
@@ -75,7 +77,7 @@ export default function ActualizarInfoRest() {
 			data: {
 				nombreRest: dataOfClient.nombreRest,
 				descRest: dataOfClient.descRest,
-				telefonoRest: '12345',
+				telefonoRest: dataOfClient.telefonoRest,
 				categoriaRest: 'Almuerzos caseros',
 			},
 			json: true,
@@ -122,14 +124,29 @@ export default function ActualizarInfoRest() {
 									<TextField
 										className={classes.item}
 										margin="normal"
+										fullWidth
+										//label="Nombre del Restaurante"
+										variant="outlined"
+										value={dataOfClient.nitRest}
+										label="NIT"
+										InputProps={{
+											readOnly: true,
+										}}
+										//onBlur={validarExistencia}
+									/>
+								</GridItem>
+
+								<GridItem xs={12} sm={12} md={6}>
+									<TextField
+										className={classes.item}
+										margin="normal"
 										required
 										fullWidth
 										//label="Nombre del Restaurante"
-
 										variant="outlined"
 										onChange={(e) => setInfo('nombreRest', e.target.value)}
 										value={dataOfClient.nombreRest}
-										label="Nombre Del Restaurante"
+										label="NOMBRE DEL RESTAURANTE"
 										//onBlur={validarExistencia}
 									/>
 								</GridItem>
@@ -143,7 +160,19 @@ export default function ActualizarInfoRest() {
 										variant="outlined"
 										onChange={(e) => setInfo('descRest', e.target.value)}
 										value={dataOfClient.descRest}
-										label="Descripción"
+										label="Dirección"
+									/>
+								</GridItem>
+								<GridItem xs={12} sm={12} md={6}>
+									<TextField
+										className={classes.item}
+										margin="normal"
+										required
+										fullWidth
+										variant="outlined"
+										onChange={(e) => setInfo('telefonoRest', e.target.value)}
+										value={dataOfClient.telefonoRest}
+										label="Teléfono"
 									/>
 								</GridItem>
 							</GridContainer>
