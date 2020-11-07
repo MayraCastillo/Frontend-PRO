@@ -23,6 +23,7 @@ import {
 	TextField,
 } from '@material-ui/core';
 import { Edit, Delete } from '@material-ui/icons';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import Select from 'react-select';
 
 import { toast } from 'react-toastify';
@@ -113,20 +114,24 @@ export default function GestionPersonal() {
 	};
 	const peticionPut = async () => {
 		const baseUrlPut =
-			`http://localhost:8091/platos/actualizar-plato` +
+			`http://localhost:8092/restaurantes/actualizar-empleado` +
 			`/` +
-			consolaSeleccionada.idPlato;
+			consolaSeleccionada.idEmpleado;
 
 		let response;
 		var dataNueva = data;
 		dataNueva.map((consola) => {
-			if (consolaSeleccionada.idPlato === consola.idPlato) {
+			if (consolaSeleccionada.idEmpleado === consola.idEmpleado) {
 				consola.nombrePlato = consolaSeleccionada.nombrePlato;
-				consola.descPlato = consolaSeleccionada.descPlato;
-				consola.precioPlato = consolaSeleccionada.precioPlato;
-				consola.categoriaPlato = consolaSeleccionada.categoriaPlato;
-				consola.ingredientesPlato = consolaSeleccionada.ingredientesPlato;
+				consola.nombreEmpleado = consolaSeleccionada.nombreEmpleado;
+				consola.correoEmpleado = consolaSeleccionada.correoEmpleado;
+				consola.passwordEmpleado = consolaSeleccionada.passwordEmpleado;
+				consola.telefonoEmpleado = consolaSeleccionada.telefonoEmpleado;
+				consola.direccionEmpleado = consolaSeleccionada.direccionEmpleado;
 				consola.cantidadPlato = consolaSeleccionada.cantidadPlato;
+				consola.imgEmpleado = 'vacio';
+				consola.idRolEmpleado = consolaSeleccionada.idRolEmpleado;
+				//consolaSeleccionada.restaurante.nitRest = '1';
 			}
 		});
 		var authOptions = {
@@ -135,38 +140,16 @@ export default function GestionPersonal() {
 			data: consolaSeleccionada,
 			json: true,
 		};
-		//console.log(consolaSeleccionada);
+		console.log(consolaSeleccionada);
 		//console.log(dataNueva);
-		console.log(authOptions);
+		//console.log(authOptions);
 		await Axios(authOptions)
 			.then(function (response) {
-				//setLoading(false);
-
-				toast.success('Se actualizó el plato');
+				toast.success('Se actualizó el Empleado');
+				abrirCerrarModalEditar();
 				//console.log("1")
 			})
-			.catch(function (error) {
-				//setLoading(false);
-				//console.log("2")
-			});
-		/*
-    await Axios.put(baseUrlPut+consolaSeleccionada.idPlato, consolaSeleccionada)
-    .then(response=>{
-      var dataNueva=data;
-      dataNueva.map(consola=>{
-        if(consolaSeleccionada.idPlato===consola.idPlato){
-          consola.nombrePlato=consolaSeleccionada.nombrePlato;
-          consola.descPlato=consolaSeleccionada.descPlato;
-          consola.precioPlato=consolaSeleccionada.precioPlato;
-          consola.categoriaPlato=consolaSeleccionada.categoriaPlato;
-          consola.ingredientesPlato=consolaSeleccionada.ingredientesPlato;
-          consola.cantidadPlato=consolaSeleccionada.cantidadPlato;         
-        }
-      })
-      setData(dataNueva);
-      console.log(dataNueva);
-      abrirCerrarModalEditar();
-    })*/
+			.catch(function (error) {});
 	};
 	/*Lo usamos para abrir y cerrar los modales*/
 	const abrirCerrarModalInsertar = () => {
@@ -200,7 +183,7 @@ export default function GestionPersonal() {
 
 	const bodyInsertar = (
 		<div className={styles.modal}>
-			<h3>Agregar Personal</h3>
+			<h3>Registro de Empleado</h3>
 			<TextField
 				variant="outlined"
 				name="nombreEmpleado"
@@ -270,63 +253,55 @@ export default function GestionPersonal() {
 		<div className={styles.modal}>
 			<h3>Editar Plato</h3>
 			<TextField
-				name="nombrePlato"
+				name="nombreEmpleado"
 				className={styles.inputMaterial}
 				variant="outlined"
-				label="Nombre del Plato"
+				label="Nombre del Empleado"
 				onChange={handleChange}
-				value={consolaSeleccionada && consolaSeleccionada.nombrePlato}
+				value={consolaSeleccionada && consolaSeleccionada.nombreEmpleado}
+			/>
+			<br />
+			<br />
+
+			<TextField
+				name="correoEmpleado"
+				className={styles.inputMaterial}
+				variant="outlined"
+				label="Correo"
+				onChange={handleChange}
+				value={consolaSeleccionada && consolaSeleccionada.correoEmpleado}
 			/>
 			<br />
 			<br />
 			<TextField
-				name="descPlato"
+				name="passwordEmpleado"
 				className={styles.inputMaterial}
 				variant="outlined"
-				label="Descripcion"
+				label="Contraseña"
 				onChange={handleChange}
-				value={consolaSeleccionada && consolaSeleccionada.descPlato}
+				value={consolaSeleccionada && consolaSeleccionada.passwordEmpleado}
 			/>
 			<br />
 			<br />
 			<TextField
-				name="precioPlato"
+				name="telefonoEmpleado"
 				className={styles.inputMaterial}
 				variant="outlined"
-				label="Precio"
+				label="Teléfono"
 				onChange={handleChange}
-				value={consolaSeleccionada && consolaSeleccionada.precioPlato}
+				value={consolaSeleccionada && consolaSeleccionada.telefonoEmpleado}
 			/>
 			<br />
 			<br />
 			<TextField
-				name="ingredientesPlato"
+				name="direccionEmpleado"
 				className={styles.inputMaterial}
 				variant="outlined"
-				label="Ingredientes"
+				label="Dirección"
 				onChange={handleChange}
-				value={consolaSeleccionada && consolaSeleccionada.ingredientesPlato}
+				value={consolaSeleccionada && consolaSeleccionada.direccionEmpleado}
 			/>
-			<br />
-			<br />
-			<TextField
-				name="categoriaPlato"
-				className={styles.inputMaterial}
-				variant="outlined"
-				label="Categoria"
-				onChange={handleChange}
-				value={consolaSeleccionada && consolaSeleccionada.categoriaPlato}
-			/>
-			<br />
-			<br />
-			<TextField
-				name="cantidadPlato"
-				className={styles.inputMaterial}
-				variant="outlined"
-				label="Cantidad"
-				onChange={handleChange}
-				value={consolaSeleccionada && consolaSeleccionada.cantidadPlato}
-			/>
+
 			<br />
 			<br />
 			<div align="right">
@@ -367,16 +342,19 @@ export default function GestionPersonal() {
 							<Table>
 								<TableHead>
 									<TableRow>
+										<TableCell>ID</TableCell>
 										<TableCell>Nombre del Empleado</TableCell>
 										<TableCell>Correo</TableCell>
 										<TableCell>Dirección</TableCell>
 										<TableCell>Teléfono</TableCell>
 										<TableCell>Rol</TableCell>
+										<TableCell>Acciones</TableCell>
 									</TableRow>
 								</TableHead>
 								<TableBody>
 									{data.map((console) => (
 										<TableRow hover key={console.idEmpleado}>
+											<TableCell>{console.idEmpleado}</TableCell>
 											<TableCell>{console.nombreEmpleado}</TableCell>
 											<TableCell>{console.correoEmpleado}</TableCell>
 											<TableCell>{console.direccionEmpleado}</TableCell>
@@ -387,7 +365,7 @@ export default function GestionPersonal() {
 													onClick={() => seleccionarConsola(console, 'Editar')}
 												/>
 												&nbsp;&nbsp;&nbsp;
-												<Delete />
+												<VisibilityOffIcon />
 											</TableCell>
 										</TableRow>
 									))}
@@ -401,6 +379,11 @@ export default function GestionPersonal() {
 						</GridItem>
 						<GridItem xs={12} sm={12} md={12}>
 							<Modal open={modalEditar} onClose={abrirCerrarModalEditar}>
+								{bodyEditar}
+							</Modal>
+						</GridItem>
+						<GridItem xs={12} sm={12} md={12}>
+							<Modal open={modalEliminar} onClose={abrirCerrarModalEliminar}>
 								{bodyEditar}
 							</Modal>
 						</GridItem>

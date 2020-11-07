@@ -15,6 +15,7 @@ import routesJefeCocina from 'routesJefeCocina.js';
 import routesMensajero from 'routesMensajero.js';
 import routesAdministrador from 'routesAdministrador.js';
 import routesSuperAdmin from 'routesSuperAdmin.js';
+import routesCliente from 'routesCliente.js';
 
 import styles from 'assets/jss/material-dashboard-react/layouts/adminStyle.js';
 
@@ -23,18 +24,18 @@ import logo from 'assets/img/reactlogo.png';
 import Login from '../views/Login/Login.js';
 import { PrivateRoute } from '../components/PrivateRoutes/PrivateRoute.js';
 import { Restaurant } from '@material-ui/icons';
+import Cliente from 'views/Client/Restaurants/Restaurants.js';
 let ps;
 var routes = [];
 
 switch (localStorage.getItem('token')) {
 	case '1':
-		//routes = routesPrincipal;
-		routes = routesMensajero;
+		routes = routesSuperAdmin;
+		//routes = Clientes;
 		break;
 	case '2':
-		//window.location.href = '/cliente';
 		routes = routesJefeCocina;
-		//routes = routesSuperAdmin;
+
 		break;
 	case '3':
 		routes = routesAdministrador;
@@ -66,6 +67,7 @@ const switchRoutes = (
 		})}
 
 		<Route path="/login" component={Login} />
+		<Route path="/cliente" component={Cliente} />
 		<Redirect from="/" to="/login" />
 	</Switch>
 );
@@ -139,6 +141,7 @@ export default function Admin({ ...rest }) {
 			window.removeEventListener('resize', resizeFunction);
 		};
 	}, [mainPanel]);
+	const token = localStorage.getItem('token');
 	return (
 		<div className={classes.wrapper}>
 			<Sidebar
