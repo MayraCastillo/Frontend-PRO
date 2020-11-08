@@ -57,8 +57,8 @@ export default function SignIn() {
 	const [estadoUser, setEstadoUser] = useState(false);
 	const [estadopass, setEstadopass] = useState(false);
 	const [errorDatos, setErrorDatos] = useState(false);
-	//const URL = 'http://localhost:8095/roles';
-	const URL = 'http://localhost:8080/roles';
+
+	const URL = 'http://localhost:8095/roles';
 
 	const handleSubmit = (event) => {
 		//return localStorage.getItem("token")? <Redirect to='/admin/dashboard' push={true}/>:false
@@ -75,7 +75,7 @@ export default function SignIn() {
 			setErrorDatos(false);
 			return;
 		}
-		console.log(URL+" "+password+" "+user)
+		
 		Axios.post(URL, { password: password, correo: user })
 			
 			.then((DataLogin) => {

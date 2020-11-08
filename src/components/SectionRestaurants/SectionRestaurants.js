@@ -2,13 +2,16 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import Axios from 'axios';
 
-const baseUrl = `http://localhost:8092/restaurantes`;
+import imgRestaurant from "../../assets/img/logoRestauranteEjemplo.jpg"
+
+const URL = `http://localhost:8092/restaurantes`;
 
 export default function SectionRestaurants() {
+	
 	const [data, setData] = useState([]);
 
 	const GetRestaurants = async () => {
-		await Axios.get(baseUrl)
+		await Axios.get(URL)
 			.then((response) => {
 				setData(response.data);
 			})
@@ -30,31 +33,21 @@ export default function SectionRestaurants() {
 			<div className="row">
 				{data.map((rest) => (
 					<div className="col-lg-4" key={rest.nitRest}>
-						{console.log(rest)}
-						<svg
+						<img 
 							className="bd-placeholder-img rounded-circle"
 							width="140"
 							height="140"
-							xmlns="https://www.w3.org/2000/svg"
-							preserveAspectRatio="xMidYMid slice"
-							focusable="false"
-							role="img"
-							aria-label="Placeholder: 140x140"
-						>
-							<title>{rest.nitRest}</title>
-							<rect width="100%" height="100%" fill="#777" />
-							<text x="50%" y="50%" fill="#777" dy=".3em">
-								140x140
-							</text>
-						</svg>
-						<h2>{console.nombreRest}</h2>
-						<p>{console.descRest}</p>
+							src={imgRestaurant}
+							title={rest.nombreRest}
+						/>
+						<h2>{rest.nombreRest}</h2>
+						<p>{rest.descRest}</p>
 						<p>
 							<a
-								className="btn btn-secondary"
-								href="#/pedido"
+								className="btn btn-info"
+								href="/cliente/restaurantes/productos"
 								role="button"
-								onClick={() => selectRestaurant(console.nitRest)}
+								onClick={() => selectRestaurant(rest.nitRest)}
 							>
 								Ver Productos &raquo;
 							</a>

@@ -13,16 +13,11 @@ import RTL from 'layouts/RTL.js';
 
 import 'assets/css/material-dashboard-react.css?v=1.9.0';
 import routes from 'routes.js';
-
-//import ReactDOM from 'react-dom';
-
 import Login from './views/Login/Login.js';
 import { PrivateRoute } from './components/PrivateRoutes/PrivateRoute.js';
 import { ProtetedRoute } from './components/PrivateRoutes/ProtetedRoute.js';
 import { RedirectRoute } from './components/PrivateRoutes/RedirectRoute.js';
-//import ReactNotification from 'react-notifications-component';
-//import 'react-notifications-component/dist/theme.css'
-import Cliente from 'views/Client/Restaurants/Restaurants.js';
+
 import Home from './views/Home/Home';
 import AboutUs from './views/AboutUs/AboutUs';
 import ContactUs from './views/ContactUs/ContactUs';
@@ -31,26 +26,10 @@ import Restaurants from './views/Client/Restaurants/Restaurants';
 
 const hist = createBrowserHistory();
 
-/*const switchRoutes = (
-	<Switch>
-
-		<RedirectRoute exact path="/" component={Admin} />
-
-		<RedirectRoute path="/admin" component={Admin} />
-
-		<ProtetedRoute path="/login" component={Login} />
-
-		<ProtetedRoute path='/cliente/restaurantes' component={Restaurants} />
-
-		
-	</Switch>
-);*/
-
-
 const switchRoutes = (
 	<Switch>
 
-{routes[0].layout === '/admin' ? (
+		{routes[0].layout === '/admin' ? (
 			<PrivateRoute
 				path={routes[0].layout + routes[0].path}
 				component={Admin}
@@ -76,13 +55,13 @@ const switchRoutes = (
 			/>
 		) : null}
 
-	   <ProtetedRoute path='/login' component={Login} /> 
-       <Route path='/cliente/restaurantes' component={Restaurants} />
-	   <RedirectRoute  path='/' component={Admin} />
+	   <RedirectRoute exact path='/' component={Admin} />
+	   <ProtetedRoute exact path='/login' component={Login} /> 
+       <Route exact path='/cliente/restaurantes' component={Restaurants} />
+	   <Route exact path='/cliente/restaurantes/productos' component={Orders} />
 
 	   <Route path='/nosotros' component={AboutUs} />
        <Route path='/contacto' component={ContactUs} />
-	   <Route path='/cliente/restaurantes/pedido' component={Orders} />
        
 	</Switch>
 );

@@ -37,10 +37,6 @@ export default function Menu() {
                     <li className="nav-item">
                         <NavLink to="/restaurantes" className="nav-link">Restaurantes </NavLink>
                     </li>
-
-                    <li className="nav-item">
-                        <NavLink to="/pedido" className="nav-link">Pedido </NavLink>
-                    </li>
                 </ul>
 
                 <button 
@@ -49,11 +45,6 @@ export default function Menu() {
                     aria-haspopup="true"
                     onClick={() => cerrarSesion()}
                 >Cerrar Sesión</button>
-
-                <form className="form-inline mt-2 mt-md-0">
-                    <input className="form-control mr-sm-2" type="text" placeholder="Buscar" aria-label="Buscar"/>
-                    <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
-                </form>
             </div>
         </nav>
     )
