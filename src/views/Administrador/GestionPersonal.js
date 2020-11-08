@@ -110,7 +110,7 @@ export default function GestionPersonal() {
 		console.log(authOptions);
 		await Axios(authOptions).then((response) => {
 			setData(data.concat(response.data));
-			toast.success('Se agrego el Empleado, correctamente');
+			toast.success('Se agregó el Empleado correctamente');
 			abrirCerrarModalInsertar();
 		});
 	};
@@ -152,6 +152,22 @@ export default function GestionPersonal() {
 				//console.log("1")
 			})
 			.catch(function (error) {});
+	};
+	const peticionDelete = async (nombre) => {
+		const baseUrlDelete =
+			`http://localhost:8092/restaurantes/eliminar-empleado` +
+			`/` +
+			consolaSeleccionada.idEmpleado;
+		console.log(baseUrlDelete);
+		await Axios.delete(baseUrlDelete).then((response) => {
+			setData(
+				data.filter(
+					(consola) => consola.idEmpleado !== consolaSeleccionada.idEmpleado
+				)
+			);
+			abrirCerrarModalEliminar();
+			toast.success('Se eliminó ' + nombre + ' del Restaurante');
+		});
 	};
 	/*Lo usamos para abrir y cerrar los modales*/
 	const abrirCerrarModalInsertar = () => {
@@ -314,7 +330,24 @@ export default function GestionPersonal() {
 			</div>
 		</div>
 	);
-
+	const bodyEliminar = (
+		<div className={styles.modal}>
+			<p>
+				¿Está seguro que desea eliminar a
+				<b> {consolaSeleccionada && consolaSeleccionada.nombreEmpleado}</b> del
+				Menú?
+			</p>
+			<div align="right">
+				<Button
+					color="secondary"
+					onClick={() => peticionDelete(consolaSeleccionada.nombreEmpleado)}
+				>
+					Sí
+				</Button>
+				<Button onClick={() => abrirCerrarModalEliminar()}>No</Button>
+			</div>
+		</div>
+	);
 	return (
 		<GridContainer>
 			<GridItem xs={3} sm={3} md={3}>
@@ -367,7 +400,11 @@ export default function GestionPersonal() {
 													onClick={() => seleccionarConsola(console, 'Editar')}
 												/>
 												&nbsp;&nbsp;&nbsp;
-												<VisibilityOffIcon />
+												<VisibilityOffIcon
+													onClick={() =>
+														seleccionarConsola(console, 'Eliminar')
+													}
+												/>
 											</TableCell>
 										</TableRow>
 									))}
@@ -386,7 +423,7 @@ export default function GestionPersonal() {
 						</GridItem>
 						<GridItem xs={12} sm={12} md={12}>
 							<Modal open={modalEliminar} onClose={abrirCerrarModalEliminar}>
-								{bodyEditar}
+								{bodyEliminar}
 							</Modal>
 						</GridItem>
 					</CardBody>

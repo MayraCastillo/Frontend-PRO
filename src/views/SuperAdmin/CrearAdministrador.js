@@ -13,6 +13,7 @@ import TextField from '@material-ui/core/TextField';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import { useEffect } from 'react';
 import Axios from 'axios';
 
 const baseUrl = `http://localhost:8092/restaurantes/crear-empleado`;
@@ -62,63 +63,14 @@ export default function CrearAdministrador() {
 	const [restaurante, setRestaurante] = React.useState('');
 
 	const [validarExistenciaPlato, setValidarExistenciaPlato] = React.useState();
-	// const [errorNombre, setErrorNombre] = React.useState("");
-	/*
- async function validarExistencia(){
-  let response;
-  var authOptions = {
-    method: "GET",
-    url: `http://localhost:8091/platos/buscar-por-nombre/`+nombrePlato,
-    data: {      
-      nombrePlato: nombrePlato,   
-    },      
-    json: true,
-  };
-  //console.log(authOptions);
-  await Axios(authOptions)
-    .then(function(response) {
-      //setLoading(false); 
-      setValidarExistenciaPlato(response.data[0].nombrePlato);
-      //console.log(validarExistenciaPlato); 
-      if(response.data[0].nombrePlato == nombrePlato) {
-        setValidarExistenciaPlato("Existe");      
-      
-      }
-            
-    })
-    .catch(function(error) {
-      //setLoading(false);
-      //console.log("2")
-      setValidarExistenciaPlato("No existe");
-     // console.log("No existee");
-   
-    });
- }
-*/
+	const capturar = () => {
+		setRestaurante(localStorage.getItem('nitRestAdmin'));
+		console.log(restaurante);
+	};
+	useEffect(() => {
+		capturar();
+	}, []);
 	async function sendData() {
-		/* 
-  if(validarExistenciaPlato == "Existe"){
-    toast.error('El usuario ya existe');
-    
-  
-  }else{*/
-
-		/* CREAR EMPLEADO, EJEMPLO:
-	{
-	    "nombreEmpleado": "Pepe",
-	    "correoEmpleado": "pepe@unicauca.edu.co", 
-	    "passwordEmpleado": "123",
-	    "telefonoEmpleado": "12345",
-	    "direccionEmpleado": "calle 1 carrera 1",
-	    "imgEmpleado": "vacio",
-	    "idRolEmpleado": "2",
-	    "restaurante": 
-	    {
-	        "nitRest": 1
-	    }
-	}
-	*/
-
 		let response;
 		var authOptions = {
 			method: 'POST',
@@ -230,7 +182,7 @@ export default function CrearAdministrador() {
 										fullWidth
 										label="Nit del Restaurante"
 										variant="outlined"
-										onChange={(e) => setRestaurante(e.target.value)}
+										value={restaurante}
 									/>
 								</GridItem>
 							</GridContainer>

@@ -21,7 +21,8 @@ import UpgradeToPro from 'views/UpgradeToPro/UpgradeToPro.js';
 import RTLPage from 'views/RTLPage/RTLPage.js';
 import AgregarPlato from 'views/JefeCocina/AgregarPlato';
 import GestionPlatos from 'views/JefeCocina/GestionPlatos';
-import Restaurantes from 'views/Client/Restaurants/Restaurants.js';
+import GestionPlatosDeshabilitados from 'views/JefeCocina/GestionPlatosDeshabilitados';
+
 const dashboardRoutes = [
 	{
 		path: '/dashboard',
@@ -30,21 +31,22 @@ const dashboardRoutes = [
 		icon: Dashboard,
 		component: AgregarPlato,
 		layout: '/admin',
-	} /*
-	{
-		path: '/user',
-		name: 'Crear Plato',
-		rtlName: 'ملف تعريفي للمستخدم',
-		icon: BubbleChart,
-		component: AgregarPlato,
-		layout: '/admin',
-	}, */,
+	},
 	{
 		path: '/table',
 		name: 'Listado De Platos',
 		rtlName: 'قائمة الجدول',
 		icon: 'content_paste',
 		component: GestionPlatos,
+		layout: '/admin',
+	},
+
+	{
+		path: '/user',
+		name: 'Platos Deshabilitados',
+		rtlName: 'ملف تعريفي للمستخدم',
+		icon: BubbleChart,
+		component: GestionPlatosDeshabilitados,
 		layout: '/admin',
 	} /*,
   {

@@ -60,69 +60,64 @@ export default function CrearRestaurante() {
 
 	const [categoriaPlato, setCategoriaPlato] = React.useState('');
 
-	const [validarExistenciaPlato, setValidarExistenciaPlato] = React.useState();
-	// const [errorNombre, setErrorNombre] = React.useState("");
-	/*
+	const [validarExistenciaRest, setValidarExistenciaRest] = React.useState();
+
 	async function validarExistencia() {
 		let response;
 		var authOptions = {
 			method: 'GET',
-			url: `http://localhost:8091/platos/buscar-por-nombre/` + nombrePlato,
+			url: `http://localhost:8091/restaurantes/buscar-por-nit/` + nitRest,
 			data: {
-				nombrePlato: nombrePlato,
+				nitRest: nitRest,
 			},
 			json: true,
 		};
 		//console.log(authOptions);
 		await Axios(authOptions)
 			.then(function (response) {
-				//setLoading(false);
-				//setValidarExistenciaPlato(response.data[0].nombrePlato);
-        //console.log(validarExistenciaPlato);
-        /*
-				if (response.data[0].nombrePlato == nombrePlato) {
-					setValidarExistenciaPlato('Existe');
+				console.log(response.data.nitRest);
+				if (response.data.nitRest == nitRest) {
+					setValidarExistenciaRest('Existe');
+					toast.error('El nit ya se encuentra registrado');
 				}
 			})
 			.catch(function (error) {
-				//setLoading(false);
-				//console.log("2")
-				setValidarExistenciaPlato('No existe');
-				// console.log("No existee");
+				setValidarExistenciaRest('No existe');
 			});
+		//console.log(validarExistenciaRest);
 	}
-*/
-	async function sendData() {
-		/*
-		if (validarExistenciaPlato == 'Existe') {
-			toast.error('El usuario ya existe');
-		} else {*/
-		let response;
-		var authOptions = {
-			method: 'POST',
-			url: baseUrl,
-			data: {
-				nitRest: nitRest,
-				nombreRest: nombreRest,
-				descRest: descRest,
-				telefonoRest: telefonoRest,
-				categoriaRest: 'vacia',
-			},
-			json: true,
-		};
-		console.log(authOptions);
-		await Axios(authOptions)
-			.then(function (response) {
-				//setLoading(false);
 
-				toast.success('Se creo el restaurante');
-				//console.log("1")
-			})
-			.catch(function (error) {
-				//setLoading(false);
-				console.log(error);
-			});
-		//}
+	async function sendData() {
+		console.log(validarExistenciaRest);
+		if (validarExistenciaRest == 'Existe') {
+			//toast.error('Este valor esta registradp');
+		} else {
+			let response;
+			var authOptions = {
+				method: 'POST',
+				url: baseUrl,
+				data: {
+					nitRest: nitRest,
+					nombreRest: nombreRest,
+					descRest: descRest,
+					telefonoRest: telefonoRest,
+					categoriaRest: 'vacia',
+				},
+				json: true,
+			};
+			console.log(authOptions);
+			await Axios(authOptions)
+				.then(function (response) {
+					//setLoading(false);
+					toast.success('Se creo el restaurante');
+					localStorage.setItem('nitRestAdmin', nitRest);
+					//console.log("1")
+				})
+				.catch(function (error) {
+					//setLoading(false);
+					console.log(error);
+				});
+		}
 	}
 
 	return (
@@ -158,6 +153,7 @@ export default function CrearRestaurante() {
 										label="Nit del Restaurante"
 										variant="outlined"
 										onChange={(e) => setNitRest(e.target.value)}
+										onBlur={validarExistencia}
 									/>
 								</GridItem>
 
