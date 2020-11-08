@@ -91,7 +91,11 @@ export default function SignIn() {
 					setUser('');
 					setPassword('');
 
-					window.location.href = '/';
+					if (localStorage.getItem('token') == '1') {
+						window.location.href = '/cliente/restaurantes';
+					} else {
+						window.location.href = '/';
+					}
 				}
 			})
 			.catch((error) => {

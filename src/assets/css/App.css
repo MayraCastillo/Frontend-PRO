@@ -40,7 +40,7 @@
 }
 
 .container-header {
-  background: url(https://holoesferica.com/wp-content/uploads/2012/01/Cenefa-81-1024x210.jpg) no-repeat fixed center;
+  background: url(../img/encabezadoEjemplo.jpg) no-repeat fixed center;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -53,7 +53,6 @@
 }
 
 .restaurant-information {
-  background: rgba(0,0,0,0.7);
   width: 80%;
   display: flex;
   align-items: center;
@@ -62,14 +61,12 @@
 .restaurant-logo {
   width: 130px;
   height: 130px;
-  background: #0B82AF; 
   float: left;
 }
 
 .restaurant-name {
   width: 50%;
   height: 70px;
-  background: #0B82AF;
   margin-left: 15px;
   float: left;
 }
@@ -79,8 +76,8 @@
   margin: auto;
   margin-top: 10px;
   padding: 20px;
-  border-style: solid;
   text-align: center;
+  /*background: rgba(0,0,0,0.7);*/
 }
 
 .footerBase {

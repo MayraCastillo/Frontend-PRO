@@ -2,6 +2,15 @@ import React from 'react';
 import {NavLink} from "react-router-dom";
 
 export default function Menu() {
+
+    const cerrarSesion = () => {
+		localStorage.setItem('token', '');
+		localStorage.setItem('idUsuario', '');
+		localStorage.setItem('nombreRol', '');
+        localStorage.setItem('correo', '');
+        
+        window.location.href = '/login';
+	};
   
     return (
         <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
@@ -28,16 +37,14 @@ export default function Menu() {
                     <li className="nav-item">
                         <NavLink to="/restaurantes" className="nav-link">Restaurantes </NavLink>
                     </li>
-
-                    <li className="nav-item">
-                        <NavLink to="/pedido" className="nav-link">Pedido </NavLink>
-                    </li>
                 </ul>
 
-                <form className="form-inline mt-2 mt-md-0">
-                    <input className="form-control mr-sm-2" type="text" placeholder="Buscar" aria-label="Buscar"/>
-                    <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
-                </form>
+                <button 
+                    className="btn btn-outline-success my-2 my-sm-0"
+                    aria-controls="fade-menu"
+                    aria-haspopup="true"
+                    onClick={() => cerrarSesion()}
+                >Cerrar Sesión</button>
             </div>
         </nav>
     )

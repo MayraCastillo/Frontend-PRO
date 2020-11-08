@@ -29,17 +29,11 @@ let ps;
 var routes = [];
 
 switch (localStorage.getItem('token')) {
-	case '1':
-		routes = routesSuperAdmin;
-		//routes = Clientes;
-		break;
 	case '2':
 		routes = routesJefeCocina;
-
 		break;
 	case '3':
 		routes = routesAdministrador;
-		//routes = routesSuperAdmin;
 		break;
 	case '4':
 		routes = routesSuperAdmin;

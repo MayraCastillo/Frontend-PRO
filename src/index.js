@@ -9,6 +9,9 @@ import RTL from 'layouts/RTL.js';
 
 import 'assets/css/material-dashboard-react.css?v=1.9.0';
 import routes from 'routes.js';
+//Style
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css'; // Archivo CSS de Bootstrap 4
+import '../node_modules/bootstrap/dist/js/bootstrap.min.js'; // Archivo Javascript de Bootstrap 4
 
 import Login from './views/Login/Login.js';
 import { PrivateRoute } from './components/PrivateRoutes/PrivateRoute.js';
@@ -16,7 +19,12 @@ import { ProtetedRoute } from './components/PrivateRoutes/ProtetedRoute.js';
 import { RedirectRoute } from './components/PrivateRoutes/RedirectRoute.js';
 //import ReactNotification from 'react-notifications-component';
 //import 'react-notifications-component/dist/theme.css'
-import Cliente from 'views/Client/Restaurants/Restaurants.js';
+
+import Home from './views/Home/Home';
+import AboutUs from './views/AboutUs/AboutUs';
+import ContactUs from './views/ContactUs/ContactUs';
+import Orders from './views/Client/Orders/Orders';
+import Restaurants from './views/Client/Restaurants/Restaurants';
 const hist = createBrowserHistory();
 
 const switchRoutes = (
@@ -47,9 +55,13 @@ const switchRoutes = (
 			/>
 		) : null}
 
-		<ProtetedRoute path="/login" component={Login} />
+		<RedirectRoute exact path="/" component={Admin} />
+		<ProtetedRoute exact path="/login" component={Login} />
+		<Route exact path="/cliente/restaurantes" component={Restaurants} />
+		<Route exact path="/cliente/restaurantes/productos" component={Orders} />
 
-		<RedirectRoute path="/" component={Admin} />
+		<Route path="/nosotros" component={AboutUs} />
+		<Route path="/contacto" component={ContactUs} />
 	</Switch>
 );
 ReactDOM.render(
