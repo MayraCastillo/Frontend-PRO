@@ -8,7 +8,7 @@ import Button from 'components/CustomButtons/Button.js';
 import Card from 'components/Card/Card.js';
 import CardHeader from 'components/Card/CardHeader.js';
 import CardBody from 'components/Card/CardBody.js';
-
+import { useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -114,7 +114,7 @@ export default function CrearRestaurante() {
 		await Axios(authOptions)
 			.then(function (response) {
 				//setLoading(false);
-
+				localStorage.setItem('nitRestAdmin', nitRest);
 				toast.success('Se creo el restaurante');
 				//console.log("1")
 			})

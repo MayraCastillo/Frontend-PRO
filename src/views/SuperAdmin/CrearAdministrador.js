@@ -12,7 +12,7 @@ import CardBody from 'components/Card/CardBody.js';
 import TextField from '@material-ui/core/TextField';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import { useEffect } from 'react';
 import Axios from 'axios';
 
 const baseUrl = `http://localhost:8092/restaurantes/crear-empleado`;
@@ -62,6 +62,13 @@ export default function CrearAdministrador() {
 	const [restaurante, setRestaurante] = React.useState('');
 
 	const [validarExistenciaPlato, setValidarExistenciaPlato] = React.useState();
+	const capturar = () => {
+		setRestaurante(localStorage.getItem('nitRestAdmin'));
+		console.log(restaurante);
+	};
+	useEffect(() => {
+		capturar();
+	}, []);
 	// const [errorNombre, setErrorNombre] = React.useState("");
 	/*
  async function validarExistencia(){
@@ -142,6 +149,7 @@ export default function CrearAdministrador() {
 				//setLoading(false);
 
 				toast.success('Se creo el Administrador');
+				localStorage.setItem('nitRestAdmin', '');
 				//console.log("1")
 			})
 			.catch(function (error) {
@@ -230,7 +238,7 @@ export default function CrearAdministrador() {
 										fullWidth
 										label="Nit del Restaurante"
 										variant="outlined"
-										onChange={(e) => setRestaurante(e.target.value)}
+										value={restaurante}
 									/>
 								</GridItem>
 							</GridContainer>

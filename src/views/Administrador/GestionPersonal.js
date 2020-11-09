@@ -47,8 +47,9 @@ const useStyles = makeStyles((theme) => ({
 		width: '100%',
 	},
 }));
-
-const baseUrl = `http://localhost:8092/restaurantes/listar-empleados/1`;
+const nitRest = localStorage.getItem('idNitRest');
+const baseUrl =
+	`http://localhost:8092/restaurantes/listar-empleados/` + nitRest;
 
 export default function GestionPersonal() {
 	const styles = useStyles();

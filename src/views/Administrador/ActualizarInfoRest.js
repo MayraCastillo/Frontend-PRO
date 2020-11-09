@@ -18,7 +18,9 @@ import { useEffect, useState } from 'react';
 import { store } from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
 import ReactNotification from 'react-notifications-component';
-const baseUrl = `http://localhost:8092/restaurantes/buscar-por-nit/1`;
+const nitRest = localStorage.getItem('idNitRest');
+const baseUrl = `http://localhost:8092/restaurantes/buscar-por-nit/` + nitRest;
+
 const useStyles = makeStyles((theme) => ({
 	appBar: {
 		position: 'relative',
@@ -70,7 +72,8 @@ export default function ActualizarInfoRest() {
 
 	async function sendData() {
 		let response;
-		const baseUrlPut = `http://localhost:8092/restaurantes/actualizar-restaurante/1`;
+		const baseUrlPut =
+			`http://localhost:8092/restaurantes/actualizar-restaurante/` + nitRest;
 		var authOptions = {
 			method: 'PUT',
 			url: baseUrlPut,
