@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 const nitRest = localStorage.getItem('idNitRest');
 const baseUrl =
-	`http://localhost:8092/restaurantes/listar-empleados/` + nitRest;
+	`http://localhost:8092/restaurantes/listar-empleados/activos/` + nitRest;
 
 export default function GestionPersonal() {
 	const styles = useStyles();
@@ -315,6 +315,40 @@ export default function GestionPersonal() {
 			</div>
 		</div>
 	);
+	const peticionDelete = async (nombre) => {
+		const baseUrlDelete =
+			`http://localhost:8092/restaurantes/eliminar-empleado` +
+			`/` +
+			consolaSeleccionada.idEmpleado;
+		console.log(baseUrlDelete);
+		await Axios.delete(baseUrlDelete).then((response) => {
+			setData(
+				data.filter(
+					(consola) => consola.idEmpleado !== consolaSeleccionada.idEmpleado
+				)
+			);
+			abrirCerrarModalEliminar();
+			toast.success('Se deshabilitó ' + nombre);
+		});
+	};
+
+	const bodyEliminar = (
+		<div className={styles.modal}>
+			<p>
+				¿Está seguro que desea deshabilitar a
+				<b> {consolaSeleccionada && consolaSeleccionada.nombreEmpleado}</b> ?
+			</p>
+			<div align="right">
+				<Button
+					color="secondary"
+					onClick={() => peticionDelete(consolaSeleccionada.nombreEmpleado)}
+				>
+					Sí
+				</Button>
+				<Button onClick={() => abrirCerrarModalEliminar()}>No</Button>
+			</div>
+		</div>
+	);
 
 	return (
 		<GridContainer>
@@ -368,7 +402,11 @@ export default function GestionPersonal() {
 													onClick={() => seleccionarConsola(console, 'Editar')}
 												/>
 												&nbsp;&nbsp;&nbsp;
-												<VisibilityOffIcon />
+												<VisibilityOffIcon
+													onClick={() =>
+														seleccionarConsola(console, 'Eliminar')
+													}
+												/>
 											</TableCell>
 										</TableRow>
 									))}
@@ -387,7 +425,7 @@ export default function GestionPersonal() {
 						</GridItem>
 						<GridItem xs={12} sm={12} md={12}>
 							<Modal open={modalEliminar} onClose={abrirCerrarModalEliminar}>
-								{bodyEditar}
+								{bodyEliminar}
 							</Modal>
 						</GridItem>
 					</CardBody>
