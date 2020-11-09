@@ -10,6 +10,7 @@ export default function SectionRestaurants() {
 	
 	const [data, setData] = useState([]);
 
+	//Lista los Restaurantes
 	const GetRestaurants = async () => {
 		await Axios.get(URL)
 			.then((response) => {
@@ -24,8 +25,9 @@ export default function SectionRestaurants() {
 		GetRestaurants();
 	}, []);
 
-	const selectRestaurant = (idRestaurant) => {
+	const selectRestaurant = (idRestaurant, nameRestaurant) => {
 		localStorage.setItem('idRestSelect', idRestaurant);
+		localStorage.setItem('nameRestSelect', nameRestaurant);
 	};
 
 	return (
@@ -47,7 +49,7 @@ export default function SectionRestaurants() {
 								className="btn btn-info"
 								href="/cliente/restaurantes/productos"
 								role="button"
-								onClick={() => selectRestaurant(rest.nitRest)}
+								onClick={() => selectRestaurant(rest.nitRest, rest.nombreRest)}
 							>
 								Ver Productos &raquo;
 							</a>

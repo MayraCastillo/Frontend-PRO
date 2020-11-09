@@ -8,6 +8,8 @@ export default function Menu() {
 		localStorage.setItem('idUsuario', '');
 		localStorage.setItem('nombreRol', '');
         localStorage.setItem('correo', '');
+        localStorage.setItem('idRestSelect', '');
+        localStorage.setItem('nameRestSelect', '');
         
         window.location.href = '/login';
 	};

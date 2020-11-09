@@ -57,7 +57,6 @@ export default function SignIn() {
 	const [estadoUser, setEstadoUser] = useState(false);
 	const [estadopass, setEstadopass] = useState(false);
 	const [errorDatos, setErrorDatos] = useState(false);
-
 	const URL = 'http://localhost:8095/roles';
 
 	const handleSubmit = (event) => {
@@ -75,15 +74,15 @@ export default function SignIn() {
 			setErrorDatos(false);
 			return;
 		}
-		
+
 		Axios.post(URL, { password: password, correo: user })
-			
 			.then((DataLogin) => {
 				if (DataLogin.data.token === 'error') {
 					setEstadoUser(false);
 					setEstadopass(false);
 					setErrorDatos(true);
 				} else {
+					//console.log(localStorage)
 					localStorage.setItem('token', DataLogin.data.idRol);
 					localStorage.setItem('idUsuario', DataLogin.data.idUsuario);
 					localStorage.setItem('nombreRol', DataLogin.data.nombreRol);
@@ -92,9 +91,9 @@ export default function SignIn() {
 					setUser('');
 					setPassword('');
 
-					if(localStorage.getItem('token') == '1'){
+					if (localStorage.getItem('token') == '1') {
 						window.location.href = '/cliente/restaurantes';
-					}else{
+					} else {
 						window.location.href = '/';
 					}
 				}

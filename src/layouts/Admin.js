@@ -15,6 +15,7 @@ import routesJefeCocina from 'routesJefeCocina.js';
 import routesMensajero from 'routesMensajero.js';
 import routesAdministrador from 'routesAdministrador.js';
 import routesSuperAdmin from 'routesSuperAdmin.js';
+import routesCliente from 'routesCliente.js';
 
 import styles from 'assets/jss/material-dashboard-react/layouts/adminStyle.js';
 
@@ -22,17 +23,12 @@ import bgImage from 'assets/img/sidebar-2.jpg';
 import logo from 'assets/img/reactlogo.png';
 import Login from '../views/Login/Login.js';
 import { PrivateRoute } from '../components/PrivateRoutes/PrivateRoute.js';
-
+import { Restaurant } from '@material-ui/icons';
+import Cliente from 'views/Client/Restaurants/Restaurants.js';
 let ps;
 var routes = [];
 
 switch (localStorage.getItem('token')) {
-	
-	case '1':
-		//alert("Cliente");
-		//window.location.href = '/cliente/restaurantes';
-		//window.open('/cliente/restaurantes');
-		break;
 	case '2':
 		routes = routesJefeCocina;
 		break;
@@ -43,8 +39,7 @@ switch (localStorage.getItem('token')) {
 		routes = routesSuperAdmin;
 		break;
 	case '5':
-		console.log("Mensajero");
-		//routes = routesMensajero;
+		routes = routesMensajero;
 		break;
 
 	default:
@@ -66,6 +61,7 @@ const switchRoutes = (
 		})}
 
 		<Route path="/login" component={Login} />
+		<Route path="/cliente" component={Cliente} />
 		<Redirect from="/" to="/login" />
 	</Switch>
 );
@@ -139,6 +135,7 @@ export default function Admin({ ...rest }) {
 			window.removeEventListener('resize', resizeFunction);
 		};
 	}, [mainPanel]);
+	const token = localStorage.getItem('token');
 	return (
 		<div className={classes.wrapper}>
 			<Sidebar
