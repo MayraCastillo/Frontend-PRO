@@ -82,12 +82,14 @@ export default function SignIn() {
 					setEstadopass(false);
 					setErrorDatos(true);
 				} else {
+					console.log(DataLogin);
+					console.log('Hola');
 					//console.log(localStorage)
 					localStorage.setItem('token', DataLogin.data.idRol);
 					localStorage.setItem('idUsuario', DataLogin.data.idUsuario);
 					localStorage.setItem('nombreRol', DataLogin.data.nombreRol);
 					localStorage.setItem('correo', user);
-					console.log(localStorage.getItem('token'));
+					localStorage.setItem('idNitRest', DataLogin.data.nitRestAux);
 					setUser('');
 					setPassword('');
 

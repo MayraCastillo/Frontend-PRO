@@ -46,8 +46,9 @@ const useStyles = makeStyles((theme) => ({
 		width: '100%',
 	},
 }));
-
-const baseUrl = `http://localhost:8091/platos/buscar-por-status/1/DELETED`;
+const nitRest = localStorage.getItem('idNitRest');
+const baseUrl =
+	`http://localhost:8091/platos/buscar-por-status/` + nitRest + `/DELETED`;
 
 export default function GPDeshabilitados() {
 	const styles = useStyles();

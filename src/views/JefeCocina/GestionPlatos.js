@@ -27,6 +27,7 @@ import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
 const useStyles = makeStyles((theme) => ({
 	modal: {
 		position: 'absolute',
@@ -46,17 +47,18 @@ const useStyles = makeStyles((theme) => ({
 		width: '100%',
 	},
 }));
-
-const baseUrl = `http://localhost:8091/platos/buscar-por-status/1/ACTIVATED`;
+const nitRest = localStorage.getItem('idNitRest');
+const baseUrl =
+	`http://localhost:8091/platos/buscar-por-status/` + nitRest + `/ACTIVATED`;
 
 export default function GestionPlatos() {
 	const styles = useStyles();
 	const classes = useStyles();
 	const [data, setData] = useState([]);
-
+	console.log(baseUrl);
 	const [modalEditar, setModalEditar] = useState(false);
 	const [modalEliminar, setModalEliminar] = useState(false);
-
+	//Hook
 	const [consolaSeleccionada, setConsolaSeleccionada] = useState({
 		nombrePlato: '',
 		descPlato: '',
@@ -98,20 +100,13 @@ export default function GestionPlatos() {
 			data: consolaSeleccionada,
 			json: true,
 		};
-		//console.log(consolaSeleccionada);
-		//console.log(dataNueva);
 		console.log(authOptions);
 		await Axios(authOptions)
 			.then(function (response) {
-				//setLoading(false);
 				toast.success('Se actualizó el plato' + ' ' + nombre);
 				abrirCerrarModalEditar();
-				//console.log("1")
 			})
-			.catch(function (error) {
-				//setLoading(false);
-				//console.log("2")
-			});
+			.catch(function (error) {});
 	};
 
 	const abrirCerrarModalEditar = () => {
