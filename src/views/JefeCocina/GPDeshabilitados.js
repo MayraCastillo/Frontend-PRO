@@ -23,7 +23,7 @@ import {
 	TextField,
 } from '@material-ui/core';
 import { Edit, Delete } from '@material-ui/icons';
-import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import VisibilityOffIcon from '@material-ui/icons/Visibility';
 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -47,9 +47,9 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const baseUrl = `http://localhost:8091/platos/buscar-por-status/1/ACTIVATED`;
+const baseUrl = `http://localhost:8091/platos/buscar-por-status/1/DELETED`;
 
-export default function GestionPlatos() {
+export default function GPDeshabilitados() {
 	const styles = useStyles();
 	const classes = useStyles();
 	const [data, setData] = useState([]);
@@ -74,7 +74,7 @@ export default function GestionPlatos() {
 		console.log(consolaSeleccionada);
 	};
 
-	const peticionPut = async (nombre) => {
+	const peticionPut = async () => {
 		const baseUrlPut =
 			`http://localhost:8091/platos/actualizar-plato` +
 			`/` +
@@ -104,8 +104,8 @@ export default function GestionPlatos() {
 		await Axios(authOptions)
 			.then(function (response) {
 				//setLoading(false);
-				toast.success('Se actualizó el plato' + ' ' + nombre);
-				abrirCerrarModalEditar();
+
+				toast.success('Se actualizó el plato');
 				//console.log("1")
 			})
 			.catch(function (error) {
@@ -173,7 +173,16 @@ export default function GestionPlatos() {
 			/>
 			<br />
 			<br />
-
+			<TextField
+				name="ingredientesPlato"
+				className={styles.inputMaterial}
+				variant="outlined"
+				label="Ingredientes"
+				onChange={handleChange}
+				value={consolaSeleccionada && consolaSeleccionada.ingredientesPlato}
+			/>
+			<br />
+			<br />
 			<TextField
 				name="categoriaPlato"
 				className={styles.inputMaterial}
@@ -195,43 +204,42 @@ export default function GestionPlatos() {
 			<br />
 			<br />
 			<div align="right">
-				<Button
-					color="primary"
-					onClick={() => peticionPut(consolaSeleccionada.nombrePlato)}
-				>
+				<Button color="primary" onClick={() => peticionPut()}>
 					Editar
 				</Button>
 				<Button onClick={() => abrirCerrarModalEditar()}>Cancelar</Button>
 			</div>
 		</div>
 	);
-	const peticionDelete = async (nombre) => {
+	const peticionHabilitarPlato = async (nombre) => {
 		const baseUrlDelete =
-			`http://localhost:8091/platos/eliminar-plato` +
+			`http://localhost:8091/platos/activar-plato` +
 			`/` +
 			consolaSeleccionada.idPlato;
 		console.log(baseUrlDelete);
-		await Axios.delete(baseUrlDelete).then((response) => {
+		await Axios.put(baseUrlDelete).then((response) => {
 			setData(
 				data.filter(
 					(consola) => consola.idPlato !== consolaSeleccionada.idPlato
 				)
 			);
 			abrirCerrarModalEliminar();
-			toast.success('Se deshabilitó ' + nombre + ' del Menú');
+			toast.success('Se habilitó ' + nombre + ' al Menú');
 		});
 	};
 	const bodyEliminar = (
 		<div className={styles.modal}>
 			<p>
-				¿Está seguro que desea deshabilitar
-				<b> {consolaSeleccionada && consolaSeleccionada.nombrePlato}</b> del
+				¿Está seguro que desea Habilitar
+				<b> {consolaSeleccionada && consolaSeleccionada.nombrePlato}</b> al
 				Menú?
 			</p>
 			<div align="right">
 				<Button
 					color="secondary"
-					onClick={() => peticionDelete(consolaSeleccionada.nombrePlato)}
+					onClick={() =>
+						peticionHabilitarPlato(consolaSeleccionada.nombrePlato)
+					}
 				>
 					Sí
 				</Button>
@@ -244,10 +252,13 @@ export default function GestionPlatos() {
 		<GridContainer>
 			<GridItem xs={12} sm={12} md={12}>
 				<Card>
-					<CardHeader color="primary">
-						<h4 className={classes.cardTitleWhite}>TABLA DE PLATOS</h4>
+					<CardHeader color="warning">
+						<h4 className={classes.cardTitleWhite}>
+							TABLA DE PLATOS DESHABILITADOS
+						</h4>
 						<p className={classes.cardCategoryWhite}>
-							Aqui encontraras todos los platos que oferta el restaurante
+							Aqui encontraras todos los platos que están deshabilitados en el
+							restaurante
 						</p>
 					</CardHeader>
 					<CardBody>
@@ -258,7 +269,6 @@ export default function GestionPlatos() {
 										<TableCell>Nombre del Plato</TableCell>
 										<TableCell>Descripción</TableCell>
 										<TableCell>Precio</TableCell>
-										<TableCell>Cantidad</TableCell>
 										<TableCell>Acciones</TableCell>
 									</TableRow>
 								</TableHead>
@@ -268,7 +278,6 @@ export default function GestionPlatos() {
 											<TableCell>{console.nombrePlato}</TableCell>
 											<TableCell>{console.descPlato}</TableCell>
 											<TableCell>{console.precioPlato}</TableCell>
-											<TableCell>{console.cantidadPlato}</TableCell>
 											<TableCell>
 												<Edit
 													onClick={() => seleccionarConsola(console, 'Editar')}

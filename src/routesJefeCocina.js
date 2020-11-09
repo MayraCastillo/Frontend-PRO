@@ -22,6 +22,7 @@ import RTLPage from 'views/RTLPage/RTLPage.js';
 import AgregarPlato from 'views/JefeCocina/AgregarPlato';
 import GestionPlatos from 'views/JefeCocina/GestionPlatos';
 import Restaurantes from 'views/Client/Restaurants/Restaurants.js';
+import GPDeshabilitados from 'views/JefeCocina/GPDeshabilitados';
 const dashboardRoutes = [
 	{
 		path: '/dashboard',
@@ -46,14 +47,15 @@ const dashboardRoutes = [
 		icon: 'content_paste',
 		component: GestionPlatos,
 		layout: '/admin',
-	} /*,
-  {
-    path: "/login",
-    name: "Login",
-    icon: LibraryBooks,
-    component: Login,
-    layout: "/admin"
-  },
+	},
+	{
+		path: '/user',
+		name: 'Platos Deshabilitados',
+		rtlName: 'ملف تعريفي للمستخدم',
+		icon: BubbleChart,
+		component: GPDeshabilitados,
+		layout: '/admin',
+	} /*
   {
     path: "/icons",
     name: "Icons",
