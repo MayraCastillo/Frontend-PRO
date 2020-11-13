@@ -92,6 +92,9 @@ export default function CrearRestaurante() {
 			});
 	}
 */
+	useEffect(() => {
+		toast.info('Bienvenido SUPER ADMIN');
+	}, []);
 	async function sendData() {
 		/*
 		if (validarExistenciaPlato == 'Existe') {

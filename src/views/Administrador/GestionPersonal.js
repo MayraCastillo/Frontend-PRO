@@ -55,8 +55,8 @@ export default function GestionPersonal() {
 	const styles = useStyles();
 	const classes = useStyles();
 	const options = [
-		{ value: '1', label: 'Jefe De Cocina' },
-		{ value: '2', label: 'Mensajero' },
+		{ value: '2', label: 'Jefe De Cocina' },
+		{ value: '5', label: 'Mensajero' },
 	];
 
 	//Hook para capturar la data
@@ -66,6 +66,7 @@ export default function GestionPersonal() {
 	const [modalEditar, setModalEditar] = useState(false);
 	const [modalEliminar, setModalEliminar] = useState(false);
 	//Formulario
+	const nitRestL = localStorage.getItem('idNitRest');
 	const [consolaSeleccionada, setConsolaSeleccionada] = useState({
 		nombreEmpleado: '',
 		correoEmpleado: '',
@@ -76,7 +77,7 @@ export default function GestionPersonal() {
 		//status_empleado:'ACTIVATED',
 		idRolEmpleado: '',
 		restaurante: {
-			nitRest: '1',
+			nitRest: nitRestL,
 		},
 	});
 	const [categoria, setCategoria] = React.useState({
@@ -104,7 +105,7 @@ export default function GestionPersonal() {
 		console.log(consolaSeleccionada);
 		var authOptions = {
 			method: 'POST',
-			url: `http://localhost:8092/restaurantes/crear-empleado`,
+			url: `http://localhost:8092/restaurantes/crear-empleado/`,
 			data: consolaSeleccionada,
 			json: true,
 		};

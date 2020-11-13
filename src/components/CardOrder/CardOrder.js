@@ -21,7 +21,8 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import CancelIcon from '@material-ui/icons/Cancel';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { modifyTodoAction } from '../../redux/Actions';
 
 const useStyles = makeStyles((theme) => ({
 	modal: {
@@ -44,32 +45,61 @@ const useStyles = makeStyles((theme) => ({
 		transform: 'scale(0.8)',
 	},
 	title: {
-		fontSize: 14,
+		fontSize: 15,
 	},
 	pos: {
 		marginBottom: 12,
+	},
+	bad: {
+		marginTop: '50px',
 	},
 }));
 
 const baseURL = `http://localhost:8094/compras`;
 
-export default function CardOrder2() {
+function createData(
+	idProduct,
+	nameProduct,
+	costProduct,
+	quantityProduct,
+	subTotalProduct
+) {
+	return {
+		idProduct,
+		nameProduct,
+		costProduct,
+		quantityProduct,
+		subTotalProduct,
+	};
+}
+
+export default function CardOrder() {
 	const styles = useStyles();
 	const classes = useStyles();
 	const [data, setData] = useState([]);
-	const [cart, setCart] = useState([('', '', '')]);
+	const [cart, setCart] = useState([]);
 	const [modalConfirmOrder, setModalConfirmOrder] = useState(false);
 	const todos = useSelector((state) => state.todos);
+	const dispatch = useDispatch();
 
 	//Recupera el Carrito Actual
 	const getCurrentCart = async () => {
 		let urlGetCurrentCart = baseURL + '/carrito';
 		await Axios.get(urlGetCurrentCart)
 			.then((response) => {
-				setData(response.data);
-				if (data != null) {
-					setCart(response.data.atrListaItems);
+				let cartAux = [];
+				for (const index in response.data.atrListaItems) {
+					let productAux = createData(
+						response.data.atrListaItems[index].atrIdPlato,
+						response.data.atrListaItems[index].objplato.nombrePlato,
+						response.data.atrListaItems[index].atrPrecio,
+						response.data.atrListaItems[index].atrCantidad,
+						response.data.atrListaItems[index].atrSubtotal
+					);
+					cartAux.push(productAux);
 				}
+				setData(response.data);
+				setCart(cartAux);
 			})
 			.catch((error) => {
 				console.log(error);
@@ -80,7 +110,6 @@ export default function CardOrder2() {
 	const postAddProducts = (idProduct, costProduct) => {
 		var urlPostAddProducts =
 			baseURL + `/carrito/` + costProduct + `/` + idProduct;
-		console.log(urlPostAddProducts);
 		var authOptions = {
 			method: 'POST',
 			url: urlPostAddProducts,
@@ -132,11 +161,15 @@ export default function CardOrder2() {
 		await Axios.delete(urlDeleteEmptyCart).then((res) => {
 			console.log(res);
 		});
+		setCart([('', '', '')]);
+		let newTodo = {};
+		dispatch(modifyTodoAction(newTodo));
+		getCurrentCart();
 	};
 
 	//Confirmar el Pedido
 	const postConfirmOrder = () => {
-		const idClient = localStorage.getItem('idUsuario');
+		const idClient = parseInt(localStorage.getItem('idUsuario'), 10);
 		var urlPostConfirmOrder = baseURL + `/factura/` + idClient;
 		var authOptions = {
 			method: 'POST',
@@ -151,7 +184,23 @@ export default function CardOrder2() {
 			.catch(function (error) {
 				console.log(error);
 			});
-		//deleteEmptyCart();
+		console.log(authOptions);
+		getFacturas();
+		deleteEmptyCart();
+		openOrCloseConfirmOrderModal();
+	};
+
+	//
+	const getFacturas = async () => {
+		let urlGetCurrentCart = baseURL + '/facturas';
+		await Axios.get(urlGetCurrentCart)
+			.then((response) => {
+				console.log(response.data);
+				setData(response.data);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
 	};
 
 	const openOrCloseConfirmOrderModal = () => {
@@ -163,7 +212,7 @@ export default function CardOrder2() {
 			<h2>Confirmar Pedido</h2>
 			<br />
 			<br />
-			<h4>¿Esta seguro que desea confirmar su pedido?</h4>
+			<h3>¿Esta seguro que desea confirmar su pedido?</h3>
 			<br />
 			<br />
 			<div align="right">
@@ -179,6 +228,10 @@ export default function CardOrder2() {
 		deleteEmptyCart();
 	}, []);
 
+	useEffect(() => {
+		getCurrentCart();
+	}, [data]);
+
 	return (
 		<Card className={classes.root}>
 			<CardContent>
@@ -187,13 +240,18 @@ export default function CardOrder2() {
 					color="textSecondary"
 					gutterBottom
 				>
-					Nombre del Restaurante.
+					{localStorage.getItem('nameRestSelect')}
 				</Typography>
 
 				<div>
 					<h5 className="float-left">Mi Pedido</h5>
-					<Delete className="float-right" />
+					<Delete className="float-right" onClick={() => deleteEmptyCart()} />
 				</div>
+
+				<Typography className={classes.bad} variant="body2" component="p">
+					¿Esta seguro de querer agregar este producto a su pedido?
+				</Typography>
+
 				<Typography variant="body2" component="p">
 					<TableContainer component={Paper} variant="outlined">
 						<Table size="small" aria-label="a dense table">
@@ -204,7 +262,7 @@ export default function CardOrder2() {
 										<TableCell align="right"> {todo.costProduct} </TableCell>
 										<TableCell align="right">
 											<CheckCircleIcon
-												color="primary"
+												color="secundary"
 												onClick={() =>
 													postAddProducts(todo.idProduct, todo.costProduct)
 												}
@@ -219,32 +277,42 @@ export default function CardOrder2() {
 				<p />
 
 				<Typography variant="body2" component="p">
+					Productos:
+				</Typography>
+
+				<Typography variant="body2" component="p">
 					<TableContainer component={Paper} variant="outlined">
 						<Table size="small" aria-label="a dense table">
 							<TableBody>
-								{cart.map((rows) => (
+								{cart.map((product) => (
 									<TableRow>
 										<TableCell component="th" scope="row">
-											{rows.atrCantidad}
+											{product.quantityProduct}
 										</TableCell>
 										<TableCell align="left">
 											<ArrowDropUpIcon
 												color="primary"
 												onClick={() =>
-													postAddProducts(rows.atrIdPlato, rows.atrPrecio)
+													postAddProducts(
+														product.idProduct,
+														product.costProduct
+													)
 												}
 											/>
 											<ArrowDropDownIcon
 												color="primary"
-												onClick={() => postReduceProducts(rows.atrIdPlato)}
+												onClick={() => postReduceProducts(product.idProduct)}
 											/>
 										</TableCell>
-										<TableCell align="left"> {rows.atrIdPlato} </TableCell>
-										<TableCell align="right"> {rows.atrSubtotal} </TableCell>
+										<TableCell align="left"> {product.nameProduct} </TableCell>
+										<TableCell align="right">
+											{' '}
+											{product.subTotalProduct}{' '}
+										</TableCell>
 										<TableCell align="right">
 											<CancelIcon
-												color="primary"
-												onClick={() => deleteProductCart(rows.atrIdPlato)}
+												color="secondary"
+												onClick={() => deleteProductCart(product.idProduct)}
 											/>
 										</TableCell>
 									</TableRow>
@@ -263,14 +331,6 @@ export default function CardOrder2() {
 						size="small"
 						fullWidth
 					/>
-				</Typography>
-
-				<Typography variant="body2" component="p">
-					Envio
-				</Typography>
-
-				<Typography variant="body2" component="p">
-					Subtotal
 				</Typography>
 				<p />
 

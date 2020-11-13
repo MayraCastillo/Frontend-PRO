@@ -15,7 +15,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import Axios from 'axios';
 
-const baseUrl = `http://localhost:8091/platos`;
+const baseUrl = `http://localhost:8091/platos/crear-plato`;
 const useStyles = makeStyles((theme) => ({
 	appBar: {
 		position: 'relative',
@@ -68,14 +68,14 @@ export default function AgregarPlato() {
 	async function validarExistencia() {
 		let response;
 		var authOptions = {
-			method: 'GET',
-			url: `http://localhost:8091/platos/buscar-por-nombre/` + nombrePlato,
+			method: 'POST',
+			url: `http://localhost:8091/platos/buscar-por-nombre/` + nitRest,
 			data: {
 				nombrePlato: nombrePlato,
 			},
 			json: true,
 		};
-		//console.log(authOptions);
+		console.log(authOptions);
 		await Axios(authOptions)
 			.then(function (response) {
 				//setLoading(false);
@@ -92,40 +92,40 @@ export default function AgregarPlato() {
 				// console.log("No existee");
 			});
 	}
+	const nitRest = localStorage.getItem('idNitRest');
 
 	async function sendData() {
-		if (validarExistenciaPlato == 'Existe') {
+		/*	if (validarExistenciaPlato == 'Existe') {
 			toast.error('El plato ya existe');
-		} else {
-			let response;
-			var authOptions = {
-				method: 'POST',
-				url: baseUrl,
-				data: {
-					nombrePlato: nombrePlato,
-					descPlato: descPlato,
-					precioPlato: precioPlato,
-					categoriaPlato: categoriaPlato,
-					ingredientesPlato: ingredientesPlato,
-					statusPlato: statusPlato,
-					cantidadPlato: cantidadPlato,
-					idRest: '1',
-				},
-				json: true,
-			};
-			console.log(authOptions);
-			await Axios(authOptions)
-				.then(function (response) {
-					//setLoading(false);
-
-					toast.success('Se agrego el plato');
-					//console.log("1")
-				})
-				.catch(function (error) {
-					//setLoading(false);
-					console.log(error);
-				});
-		}
+		} else {*/
+		let response;
+		var authOptions = {
+			method: 'POST',
+			url: baseUrl,
+			data: {
+				nombrePlato: nombrePlato,
+				descPlato: descPlato,
+				precioPlato: precioPlato,
+				categoriaPlato: categoriaPlato,
+				ingredientesPlato: ingredientesPlato,
+				statusPlato: statusPlato,
+				cantidadPlato: cantidadPlato,
+				nitRest: nitRest,
+			},
+			json: true,
+		};
+		console.log(authOptions);
+		await Axios(authOptions)
+			.then(function (response) {
+				//setLoading(false);
+				toast.success('Se agrego el plato');
+				//console.log("1")
+			})
+			.catch(function (error) {
+				//setLoading(false);
+				console.log(error);
+			});
+		//	}
 	}
 
 	return (
@@ -148,7 +148,7 @@ export default function AgregarPlato() {
 										label="Nombre del Plato"
 										variant="outlined"
 										onChange={(e) => setNombrePlato(e.target.value)}
-										onBlur={validarExistencia}
+										//onBlur={validarExistencia}
 									/>
 								</GridItem>
 
