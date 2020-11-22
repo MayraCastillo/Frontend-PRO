@@ -49,6 +49,7 @@ export default function AdminNavbarLinks() {
 		localStorage.setItem('correo', '');
 		localStorage.setItem('idUsuario', '');
 		localStorage.setItem('nitRestAdmin', '');
+		localStorage.setItem('nitRest', '');
 		localStorage.setItem('nombreRol', '');
 		window.location.href = '/login';
 	};

@@ -22,7 +22,7 @@ import RTLPage from 'views/RTLPage/RTLPage.js';
 import AgregarPlato from 'views/JefeCocina/AgregarPlato';
 import GestionPlatos from 'views/JefeCocina/GestionPlatos';
 import GestionPlatosDeshabilitados from 'views/JefeCocina/GestionPlatosDeshabilitados';
-
+import GestionSemanario from 'views/JefeCocina/GestionSemanario.js';
 const dashboardRoutes = [
 	{
 		path: '/dashboard',
@@ -47,6 +47,14 @@ const dashboardRoutes = [
 		rtlName: 'ملف تعريفي للمستخدم',
 		icon: BubbleChart,
 		component: GestionPlatosDeshabilitados,
+		layout: '/admin',
+	},
+	{
+		path: '/icons',
+		name: 'Semanario',
+		rtlName: 'الرموز',
+		icon: LibraryBooks,
+		component: GestionSemanario,
 		layout: '/admin',
 	} /*,
   {
@@ -96,6 +104,7 @@ const dashboardRoutes = [
     component: UpgradeToPro,
     layout: "/admin"
   }*/,
+	,
 ];
 
 export default dashboardRoutes;

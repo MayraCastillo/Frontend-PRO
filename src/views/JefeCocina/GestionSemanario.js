@@ -8,7 +8,7 @@ import Table2 from 'components/Table/Table.js';
 import Card from 'components/Card/Card.js';
 import CardHeader from 'components/Card/CardHeader.js';
 import CardBody from 'components/Card/CardBody.js';
-
+import Select from 'react-select';
 import { useEffect, useState } from 'react';
 import Axios from 'axios';
 import {
@@ -27,6 +27,26 @@ import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+//Importaciones para el boton de guardado
+
+import SaveIcon from '@material-ui/icons/Save';
+//IMPORTACIONES PARA EL CHECK
+
+import { withStyles } from '@material-ui/core/styles';
+import { green } from '@material-ui/core/colors';
+import Checkbox from '@material-ui/core/Checkbox';
+
+const GreenCheckbox = withStyles({
+	root: {
+		color: green[400],
+		'&$checked': {
+			color: green[600],
+		},
+	},
+	checked: {},
+})((props) => <Checkbox color="default" {...props} />);
+//FIN CHECK
+
 const useStyles = makeStyles((theme) => ({
 	modal: {
 		position: 'absolute',
@@ -45,14 +65,40 @@ const useStyles = makeStyles((theme) => ({
 	inputMaterial: {
 		width: '100%',
 	},
+	button: {
+		margin: theme.spacing(1),
+	},
 }));
 
 const baseUrl = `http://localhost:8091/platos/buscar-por-status/1/ACTIVATED`;
 
-export default function GestionPlatos() {
+export default function GestionSemanario() {
+	//Metodos para verificar el semanario "CHECK"
+	const [state, setState] = React.useState({
+		checkedMonday: true,
+		checkedThusday: true,
+		checkedWensday: true,
+		checkedThursday: true,
+		checkedFriday: true,
+		checkedSaturday: true,
+		checkedSunday: true,
+	});
+
+	const handleChangeCheck = (event) => {
+		setState({ ...state, [event.target.name]: event.target.checked });
+	};
+	//FIN CHECK
 	const styles = useStyles();
 	const classes = useStyles();
-	const [data, setData] = useState([]);
+	const [nombrePlato, setNombre] = useState('Arroz');
+	const [data, setData] = useState([
+		['Dakota Rice'],
+		['Minerva Hooper'],
+		['Sage Rodriguez'],
+		['Philip Chaney'],
+		['Doris Greene'],
+		['Mason Porter'],
+	]);
 
 	const [modalEditar, setModalEditar] = useState(false);
 	const [modalEliminar, setModalEliminar] = useState(false);
@@ -173,13 +219,21 @@ export default function GestionPlatos() {
 			/>
 			<br />
 			<br />
-
+			<TextField
+				name="ingredientesPlato"
+				className={styles.inputMaterial}
+				variant="outlined"
+				label="Ingredientes"
+				onChange={handleChange}
+				value={consolaSeleccionada && consolaSeleccionada.ingredientesPlato}
+			/>
+			<br />
+			<br />
 			<TextField
 				name="categoriaPlato"
 				className={styles.inputMaterial}
 				variant="outlined"
 				label="Categoria"
-				disabled
 				onChange={handleChange}
 				value={consolaSeleccionada && consolaSeleccionada.categoriaPlato}
 			/>
@@ -238,47 +292,125 @@ export default function GestionPlatos() {
 		</div>
 	);
 
+	//Filtrado por categorias
+	const options = [
+		{ value: '1', label: 'Principio' },
+		{ value: '2', label: 'Bebida' },
+		{ value: '3', label: 'Ensalada' },
+		{ value: '4', label: 'Postre' },
+		{ value: '5', label: 'Especial' },
+	];
+	const [categoriaPlato, setCategoriaPlato] = React.useState({
+		value: '-1',
+		label: 'Filtrado por Categorías',
+	});
+
+	function handleChangeCategoria(selectedOption) {
+		setCategoriaPlato(selectedOption);
+		console.log(categoriaPlato);
+		// setConsolaSeleccionada({idRol_empleado:categoria.value})
+	}
+	//Fin filtrado por categorias
 	return (
 		<GridContainer>
 			<GridItem xs={12} sm={12} md={12}>
 				<Card>
 					<CardHeader color="primary">
-						<h4 className={classes.cardTitleWhite}>TABLA DE PLATOS</h4>
+						<h4 className={classes.cardTitleWhite}>
+							SEMANARIO DEL RESTAURANTE
+						</h4>
 						<p className={classes.cardCategoryWhite}>
 							Aqui encontraras todos los platos que oferta el restaurante
 						</p>
 					</CardHeader>
 					<CardBody>
+						<GridItem xs={12} sm={12} md={6}>
+							<Select
+								name="categoria"
+								value={categoriaPlato}
+								onChange={handleChangeCategoria}
+								options={options}
+							/>
+						</GridItem>
 						<TableContainer>
 							<Table>
 								<TableHead>
 									<TableRow>
 										<TableCell>Nombre del Plato</TableCell>
-										<TableCell>Descripción</TableCell>
-										<TableCell>Precio</TableCell>
-										<TableCell>Acciones</TableCell>
+										<TableCell>Lunes</TableCell>
+										<TableCell>Martes</TableCell>
+										<TableCell>Miércoles</TableCell>
+										<TableCell>Jueves</TableCell>
+										<TableCell>Viernes</TableCell>
+										<TableCell>Sábado</TableCell>
+										<TableCell>Domingo</TableCell>
 									</TableRow>
 								</TableHead>
 								<TableBody>
 									{data.map((console) => (
 										<TableRow hover key={console.idPlato}>
 											<TableCell>{console.nombrePlato}</TableCell>
-											<TableCell>{console.descPlato}</TableCell>
-											<TableCell>{console.precioPlato}</TableCell>
 											<TableCell>
-												<Edit
-													onClick={() => seleccionarConsola(console, 'Editar')}
+												<GreenCheckbox
+													checked={state.checkedG}
+													onChange={handleChangeCheck}
+													//name="checkedG"
 												/>
-												&nbsp;&nbsp;&nbsp;
-												<VisibilityOffIcon
-													onClick={() =>
-														seleccionarConsola(console, 'Eliminar')
-													}
+											</TableCell>
+											<TableCell>
+												<GreenCheckbox
+													checked={state.checkedG}
+													onChange={handleChangeCheck}
+													//name="checkedG"
+												/>
+											</TableCell>
+											<TableCell>
+												<GreenCheckbox
+													checked={state.checkedG}
+													onChange={handleChangeCheck}
+													//name="checkedG"
+												/>
+											</TableCell>
+											<TableCell>
+												<GreenCheckbox
+													checked={state.checkedG}
+													onChange={handleChangeCheck}
+													//name="checkedG"
+												/>
+											</TableCell>
+											<TableCell>
+												<GreenCheckbox
+													checked={state.checkedG}
+													onChange={handleChangeCheck}
+													//name="checkedG"
+												/>
+											</TableCell>
+											<TableCell>
+												<GreenCheckbox
+													checked={state.checkedG}
+													onChange={handleChangeCheck}
+													//name="checkedG"
+												/>
+											</TableCell>
+											<TableCell>
+												<GreenCheckbox
+													checked={state.checkedG}
+													onChange={handleChangeCheck}
+													//name="checkedG"
 												/>
 											</TableCell>
 										</TableRow>
 									))}
 								</TableBody>
+								<Button
+									variant="contained"
+									color="primary"
+									size="large"
+									className={classes.button}
+									startIcon={<SaveIcon />}
+								>
+									Guardar Semanario
+								</Button>
 							</Table>
 						</TableContainer>
 						<Modal open={modalEditar} onClose={abrirCerrarModalEditar}>

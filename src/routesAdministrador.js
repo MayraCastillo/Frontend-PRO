@@ -20,6 +20,7 @@ import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 //core Administrador
 import ActualizarInfoRest from 'views/Administrador/ActualizarInfoRest.js';
 import GestionPersonal from 'views/Administrador/GestionPersonal.js';
+import Estadisticas from 'views/Administrador/Estadisticas.js';
 
 const dashboardRoutes = [
 	{
@@ -27,7 +28,7 @@ const dashboardRoutes = [
 		name: 'Estadísticas',
 		rtlName: 'لوحة القيادة',
 		icon: Dashboard,
-		component: DashboardPage,
+		component: Estadisticas,
 		layout: '/admin',
 	},
 

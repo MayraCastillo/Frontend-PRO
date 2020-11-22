@@ -12,6 +12,7 @@ import CardBody from 'components/Card/CardBody.js';
 import TextField from '@material-ui/core/TextField';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Modal } from '@material-ui/core';
 
 import Axios from 'axios';
 
@@ -48,6 +49,17 @@ const useStyles = makeStyles((theme) => ({
 		flexDirection: 'row',
 		display: 'flex',
 	},
+	modal: {
+		position: 'absolute',
+		width: 400,
+		backgroundColor: theme.palette.background.paper,
+		border: '2px solid #000',
+		boxShadow: theme.shadows[5],
+		padding: theme.spacing(2, 4, 3),
+		top: '50%',
+		left: '50%',
+		transform: 'translate(-50%, -50%)',
+	},
 }));
 
 toast.configure();
@@ -61,7 +73,25 @@ export default function CrearRestaurante() {
 	const [categoriaPlato, setCategoriaPlato] = React.useState('');
 
 	const [validarExistenciaRest, setValidarExistenciaRest] = React.useState();
+	const [openModalStreet, setOpenModalStreet] = React.useState(false);
+	//HandleOpen se usa para abrir el modal de la direccion
+	const handleOpen = () => {
+		setOpenModalStreet(true);
+	};
+	//HandleOpen se usa para cerrar el modal de la direccion
+	const handleClose = () => {
+		setOpenModalStreet(false);
+	};
 
+	//Cuerpo del Modal para direccion
+	const body = (
+		<div className={classes.modal}>
+			<h2 id="simple-modal-title">Text in a modal</h2>
+			<p id="simple-modal-description">
+				Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+			</p>
+		</div>
+	);
 	async function validarExistencia() {
 		let response;
 		var authOptions = {
@@ -167,6 +197,17 @@ export default function CrearRestaurante() {
 										variant="outlined"
 										onChange={(e) => setDescRest(e.target.value)}
 									/>
+									<button type="button" onClick={handleOpen()}>
+										Open Modal
+									</button>
+									<Modal
+										open={openModalStreet()}
+										onClose={handleClose()}
+										//aria-labelledby="simple-modal-title"
+										//aria-describedby="simple-modal-description"
+									>
+										{body}
+									</Modal>
 								</GridItem>
 								<GridItem xs={12} sm={12} md={6}>
 									<TextField

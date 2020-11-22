@@ -12,10 +12,10 @@ import CardBody from 'components/Card/CardBody.js';
 import TextField from '@material-ui/core/TextField';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import Select from 'react-select';
 import Axios from 'axios';
 
-const baseUrl = `http://localhost:8091/platos`;
+const baseUrl = `http://localhost:8091/platos/crear-plato`;
 const useStyles = makeStyles((theme) => ({
 	appBar: {
 		position: 'relative',
@@ -58,12 +58,30 @@ export default function AgregarPlato() {
 	const [descPlato, setDescPlato] = React.useState('');
 	const [precioPlato, setPrecioPlato] = React.useState('');
 	const [imgPlato, setImgPlato] = React.useState('');
-	const [categoriaPlato, setCategoriaPlato] = React.useState('');
+	//const [categoriaPlato, setCategoriaPlato] = React.useState('');
 	const [ingredientesPlato, setIngredientesPlato] = React.useState('');
 	const [statusPlato, setStatusPlato] = React.useState('ACTIVATED');
 	const [cantidadPlato, setCantidadPlato] = React.useState('');
 	const [validarExistenciaPlato, setValidarExistenciaPlato] = React.useState();
 	// const [errorNombre, setErrorNombre] = React.useState("");
+
+	const options = [
+		{ value: '1', label: 'Principio' },
+		{ value: '2', label: 'Bebida' },
+		{ value: '3', label: 'Ensalada' },
+		{ value: '4', label: 'Postre' },
+		{ value: '5', label: 'Especial' },
+	];
+	const [categoriaPlato, setCategoriaPlato] = React.useState({
+		value: '-1',
+		label: 'Categoría',
+	});
+
+	function handleChangeCategoria(selectedOption) {
+		setCategoriaPlato(selectedOption);
+		console.log(categoriaPlato);
+		// setConsolaSeleccionada({idRol_empleado:categoria.value})
+	}
 
 	async function validarExistencia() {
 		let response;
@@ -94,6 +112,7 @@ export default function AgregarPlato() {
 	}
 
 	async function sendData() {
+		console.log(categoriaPlato);
 		if (validarExistenciaPlato == 'Existe') {
 			toast.error('El plato ya existe');
 		} else {
@@ -105,11 +124,12 @@ export default function AgregarPlato() {
 					nombrePlato: nombrePlato,
 					descPlato: descPlato,
 					precioPlato: precioPlato,
-					categoriaPlato: categoriaPlato,
-					ingredientesPlato: ingredientesPlato,
+					categoriaPlato: categoriaPlato.label,
+					ingredientesPlato: 'vacio',
 					statusPlato: statusPlato,
 					cantidadPlato: cantidadPlato,
-					idRest: '1',
+					nitRest: localStorage.getItem('nitRest'),
+					imgPlato: 'vacio',
 				},
 				json: true,
 			};
@@ -182,31 +202,17 @@ export default function AgregarPlato() {
 										margin="normal"
 										required
 										fullWidth
-										label="Categoria"
-										variant="outlined"
-										onChange={(e) => setCategoriaPlato(e.target.value)}
-									/>
-								</GridItem>
-								<GridItem xs={12} sm={12} md={6}>
-									<TextField
-										className={classes.item}
-										margin="normal"
-										required
-										fullWidth
-										label="Ingredientes"
-										variant="outlined"
-										onChange={(e) => setIngredientesPlato(e.target.value)}
-									/>
-								</GridItem>
-								<GridItem xs={12} sm={12} md={6}>
-									<TextField
-										className={classes.item}
-										margin="normal"
-										required
-										fullWidth
 										label="Platos Producidos"
 										variant="outlined"
 										onChange={(e) => setCantidadPlato(e.target.value)}
+									/>
+								</GridItem>
+								<GridItem xs={12} sm={12} md={6}>
+									<Select
+										name="categoria"
+										value={categoriaPlato}
+										onChange={handleChangeCategoria}
+										options={options}
 									/>
 								</GridItem>
 							</GridContainer>

@@ -60,7 +60,11 @@ export default function SignIn() {
 	const URL = 'http://localhost:8095/roles';
 
 	const handleSubmit = (event) => {
-		//return localStorage.getItem("token")? <Redirect to='/admin/dashboard' push={true}/>:false
+		/*
+		localStorage.setItem('token', '2');
+		if (localStorage.getItem('token')) {
+			return <Redirect to="/admin/user" push={true} />;
+		}*/
 		event.preventDefault();
 		if (user.trim() == '') {
 			setEstadoUser(true);
@@ -82,12 +86,11 @@ export default function SignIn() {
 					setEstadopass(false);
 					setErrorDatos(true);
 				} else {
-					//console.log(localStorage)
 					localStorage.setItem('token', DataLogin.data.idRol);
 					localStorage.setItem('idUsuario', DataLogin.data.idUsuario);
 					localStorage.setItem('nombreRol', DataLogin.data.nombreRol);
 					localStorage.setItem('correo', user);
-					console.log(localStorage.getItem('token'));
+					localStorage.setItem('nitRest', DataLogin.data.nitRestAux);
 					setUser('');
 					setPassword('');
 
@@ -101,34 +104,6 @@ export default function SignIn() {
 
 		// return localStorage.getItem("token")? <Redirect to='/admin/dashboard' push={true}/>:false
 	};
-
-	/*
-  if(localStorage.getItem("token")){
-    return <Redirect to='/admin/user' push={true}/>
-  }      
-
-useEffect(()=>{
-    if(localStorage.getItem("token")){
-      return <Redirect to='/admin/user' push={true}/>
-    }      
-},[handleSubmit])
-
-
-  if(localStorage.getItem("token")){
-    return <Redirect to='/admin/user' push={true}/>
-  }      
- 
-  if(localStorage.getItem("token")){
-    return <Redirect to='/admin/user' push={true}/>
-  }
-
- localStorage.setItem('token',"qwdqw123");
-  localStorage.setItem('user', "1234");
-  localStorage.setItem('rol', "2");
-   
-  if(localStorage.getItem("token")?true:false){
-    return <Redirect to='/admin/user' push={true}/>
-  }*/
 
 	return (
 		<Container component="main" maxWidth="xs">
