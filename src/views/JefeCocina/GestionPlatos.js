@@ -9,6 +9,9 @@ import Card from 'components/Card/Card.js';
 import CardHeader from 'components/Card/CardHeader.js';
 import CardBody from 'components/Card/CardBody.js';
 
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faSearch} from "@fortawesome/free-solid-svg-icons";
+
 import { useEffect, useState } from 'react';
 import Axios from 'axios';
 import {
@@ -53,7 +56,8 @@ export default function GestionPlatos() {
 	const styles = useStyles();
 	const classes = useStyles();
 	const [data, setData] = useState([]);
-
+	const [busqueda, setBusqueda] = useState("");
+	const [platosFiltrados, setPlatosFiltrados] = useState([]);
 	const [modalEditar, setModalEditar] = useState(false);
 	const [modalEliminar, setModalEliminar] = useState(false);
 
@@ -136,6 +140,28 @@ export default function GestionPlatos() {
 				console.log(error);
 			});
 	};
+
+	const realizarBusqueda = async (event) => {
+		event.persist();
+		await console.log(busqueda);
+		filtrarPlatos();
+	}
+
+	const filtrarPlatos=()=>{
+		var search=null;
+		search=data.filter(item=>{
+			if(item.nombrePlato.includes(busqueda)){
+				return item;
+			}
+		})
+		if(busqueda == ""){
+			console.log("Entra");
+			peticionGet();
+		}
+		setData(search);
+	}
+
+
 	useEffect(() => {
 		peticionGet();
 	}, []);
@@ -257,6 +283,21 @@ export default function GestionPlatos() {
 						</p>
 					</CardHeader>
 					<CardBody>
+
+					<div className="barraBusqueda">
+						<input
+						type="text"
+						placeholder="Buscar"
+						className="textField"
+						name="busqueda"
+						onChange={(e) => setBusqueda(e.target.value)}
+						/>
+						<button type="button" className="btnBuscar" onClick={realizarBusqueda} >
+						{" "}
+						<FontAwesomeIcon icon={faSearch} />
+						</button>
+					</div>
+
 						<TableContainer>
 							<Table>
 								<TableHead>

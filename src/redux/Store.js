@@ -11,6 +11,8 @@ const initialState = {
       costProduct: "",
     },
   ],
+
+  todaysmenu: [],
 };
 
 export const store = createStore(

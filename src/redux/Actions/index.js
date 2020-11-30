@@ -20,3 +20,8 @@ export const modifyTodoAction = (todo) => {
         payload: todo
     }
 };
+
+export const addTodaysMenuAction = (todaysmenu) => ({
+    type: "ADD_TODAYSMENU",
+    payload: todaysmenu,
+});

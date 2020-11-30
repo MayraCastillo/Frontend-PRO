@@ -8,6 +8,8 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SectionProducts from '../SectionProducts/SectionProducts';
+import SectionTodaysMenu from '../SectionTodaysMenu/SectionTodaysMenu';
+
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -35,10 +37,7 @@ export default function SimpleAccordion() {
 				</AccordionSummary>
 				<AccordionDetails>
 					<Typography>
-						<SectionProducts
-							idRestSelect={idSelectRest}
-							categoria="plato-del-dia"
-						/>
+						<SectionTodaysMenu idRestSelect={idSelectRest} />
 					</Typography>
 				</AccordionDetails>
 			</Accordion>

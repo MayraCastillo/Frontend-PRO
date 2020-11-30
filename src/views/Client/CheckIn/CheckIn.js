@@ -5,11 +5,9 @@ import Header from '../../../components/Header/Header';
 import Footer from '../../../components/Footer/Footer';
 import GridItem from "../../../components/Grid/GridItem";
 import GridContainer from "../../../components/Grid/GridContainer";
-import Tabs from "../../../components/Tabs/Tabs";
-import CardOrder from "../../../components/CardOrder/CardOrder";
-import Stepper from '../../../components/Stepper/Stepper2';
-import { Provider } from "react-redux";
-import { store } from "../../../redux/Store";
+import CardOrderConfirm from "../../../components/CardOrder/CardOrderConfirm";
+import SectionCheckIn from "../../../components/SectionCheckIn/SectionCheckIn";
+import Stepper from '../../../components/Stepper/Stepper3';
 
 const useStyles = makeStyles((theme) => ({
     justify: {
@@ -23,22 +21,20 @@ export default function Orders() {
         <Menu />
         <Header />
         <main role="main" className="containerBase">
-        <Provider store={store}>
             <Stepper /><br/><br/>
             <div className={classes.justify}>
             <GridContainer>
                 <GridItem xs={12} sm={12} md={8}>
-                    <Tabs />
+                    <SectionCheckIn />
                 </GridItem>
 
                 <GridItem xs={12} sm={12} md={4}>
                     <GridItem>
-                        <CardOrder />
+                        <CardOrderConfirm />
                     </GridItem>
                 </GridItem>
             </GridContainer>
             </div>
-        </Provider>
         </main>
         <Footer />
     </>)

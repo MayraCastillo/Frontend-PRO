@@ -18,7 +18,7 @@ import { Modal } from '@material-ui/core';
 import Axios from 'axios';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import CancelIcon from '@material-ui/icons/Cancel';
+import ClearIcon from '@material-ui/icons/Clear';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 import { useDispatch, useSelector } from "react-redux";
@@ -53,6 +53,15 @@ const useStyles = makeStyles((theme) => ({
 	bad: {
 		marginTop: '50px',
 	},
+	buttonDelete: {
+        color: 'white',
+		borderRadius: '50%',
+		background: '-webkit-linear-gradient( 95deg, rgb(109,1,1) 0%, rgb(228,23,23) 50%,  rgb(255,117,117) 100%)',
+	},
+	button: {
+        color: 'white',
+		background: '-webkit-linear-gradient( 95deg, rgb(3,92,107) 0%, rgb(23,162,184) 50%, rgb(56,204,227) 100%)',
+	},
 }));
 
 const baseURL = `http://localhost:8094/compras`;
@@ -77,7 +86,7 @@ export default function CardOrder() {
 		let urlGetCurrentCart = baseURL + '/carrito';
 		await Axios.get(urlGetCurrentCart)
 		.then((response) => {
-				
+			console.log(response.data);
 			let cartAux = [];
 			for (const index in response.data.atrListaItems) {
 				let productAux = createData(
@@ -89,6 +98,7 @@ export default function CardOrder() {
 								)
 				cartAux.push(productAux)
 			}
+			
 			setData(response.data);
 			setCart(cartAux);
 		})
@@ -160,11 +170,11 @@ export default function CardOrder() {
 	//Confirmar el Pedido
 	const postConfirmOrder = () => {
 		const idClient = parseInt(localStorage.getItem('idUsuario'),10);
-		var urlPostConfirmOrder = baseURL + `/factura/` + idClient;
+		var urlPostConfirmOrder = baseURL + `/factura/` + idClient+`/`+localStorage.getItem('idRestSelect');
 		var authOptions = {
 			method: 'POST',
 			url: urlPostConfirmOrder,
-			data: { name: idClient },
+			data: { idCliente: idClient, idRestaurante: localStorage.getItem('idRestSelect')},
 			json: true,
 		};
 		Axios(authOptions)
@@ -175,22 +185,7 @@ export default function CardOrder() {
 				console.log(error);
 			});
 		console.log(authOptions)
-		getFacturas();
-		deleteEmptyCart();
 		openOrCloseConfirmOrderModal()
-	};
-
-	//
-	const getFacturas = async () => {
-		let urlGetCurrentCart = baseURL + '/facturas';
-		await Axios.get(urlGetCurrentCart)
-			.then((response) => {
-				console.log(response.data)
-				setData(response.data)
-			})
-			.catch((error) => {
-				console.log(error);
-			});
 	};
 
 	const openOrCloseConfirmOrderModal = () => {
@@ -199,14 +194,16 @@ export default function CardOrder() {
 
 	const bodyConfirmOrder = (
 		<div className={styles.modal}>
-			<h2>Confirmar Pedido</h2>
+			<h5>Confirmar Pedido</h5>
 			<br />
 			<br />
-			<h3>¿Esta seguro que desea confirmar su pedido?</h3>
+			<h5>¿Esta seguro que desea confirmar su pedido?</h5>
 			<br />
 			<br />
 			<div align="right">
-				<Button color="primary" onClick={() => postConfirmOrder()}>
+				<Button color="primary" onClick={() => postConfirmOrder()}
+				href="/cliente/restaurantes/productos/factura"
+				>
 					Confirmar
 				</Button>
 				<Button onClick={() => openOrCloseConfirmOrderModal()}>Cancelar</Button>
@@ -279,12 +276,10 @@ export default function CardOrder() {
 										<TableCell component="th" scope="row">
 											{product.quantityProduct}
 										</TableCell>
-										<TableCell align="left">
-											<ArrowDropUpIcon
+										<TableCell align="left" >
+											<ArrowDropUpIcon 
 												color="primary"
-												onClick={() =>
-													postAddProducts(product.idProduct, product.costProduct)
-												}
+												onClick={() => postAddProducts(product.idProduct, product.costProduct)}
 											/>
 											<ArrowDropDownIcon
 												color="primary"
@@ -292,10 +287,10 @@ export default function CardOrder() {
 											/>
 										</TableCell>
 										<TableCell align="left"> {product.nameProduct} </TableCell>
-										<TableCell align="right"> {product.subTotalProduct} </TableCell>
-										<TableCell align="right">
-											<CancelIcon
-												color="secondary"
+										<TableCell align="left"> {product.subTotalProduct} </TableCell>
+										<TableCell align="right" >
+											<ClearIcon
+												className={classes.buttonDelete}
 												onClick={() => deleteProductCart(product.idProduct)}
 											/>
 										</TableCell>
@@ -324,12 +319,13 @@ export default function CardOrder() {
 				<p />
 
 				<Button
+					id="btnConfirmOrder"
 					variant="contained"
-					color="primary"
+					className={classes.button}
 					fullWidth
 					onClick={() => openOrCloseConfirmOrderModal()}
 				>
-					Realizar Pedido
+					Continuar
 				</Button>
 			</CardContent>
 

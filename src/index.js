@@ -25,6 +25,8 @@ import AboutUs from './views/AboutUs/AboutUs';
 import ContactUs from './views/ContactUs/ContactUs';
 import Orders from './views/Client/Orders/Orders';
 import Restaurants from './views/Client/Restaurants/Restaurants';
+import CheckIn from './views/Client/CheckIn/CheckIn';
+
 const hist = createBrowserHistory();
 
 const switchRoutes = (
@@ -59,6 +61,7 @@ const switchRoutes = (
 		<ProtetedRoute exact path="/login" component={Login} />
 		<Route exact path="/cliente/restaurantes" component={Restaurants} />
 		<Route exact path="/cliente/restaurantes/productos" component={Orders} />
+		<Route exact path="/cliente/restaurantes/productos/factura" component={CheckIn} />
 
 		<Route path="/nosotros" component={AboutUs} />
 		<Route path="/contacto" component={ContactUs} />

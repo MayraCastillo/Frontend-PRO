@@ -1,7 +1,7 @@
 import React from 'react';
 import { useEffect, useState } from "react";
 import Axios from "axios";
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+import AddIcon from '@material-ui/icons/Add';
 import GridItem from "../Grid/GridItem";
 import GridContainer from "../Grid/GridContainer";
 import { makeStyles } from '@material-ui/core/styles';
@@ -14,6 +14,11 @@ const useStyles = makeStyles({
     root: {
       width: '100%',
     },
+    button: {
+        color: 'white',
+        borderRadius: '50%',
+		background: '-webkit-linear-gradient( 95deg, rgb(3,92,107) 0%, rgb(23,162,184) 50%, rgb(56,204,227) 100%)',
+	},
 });
 
 const baseUrl =`http://localhost:8091/platos`;
@@ -69,7 +74,7 @@ export default function SectionProducts(props) {
                 {data.map(rest=>(
                     <div className="col-md-6"  key={rest.id}>
                         <div className="card mb-6 shadow-sm">
-                            <AddCircleIcon color="primary" style={{ fontSize: 30}}
+                            <AddIcon className={classes.button} style={{ fontSize: 30}}
                              onClick={() =>addProduct(rest.idPlato, rest.nombrePlato, rest.precioPlato)}/>
                             <img className={classes.root} src={imgProduct} title={rest.nombrePlato}/>
                             <div className="card-body">

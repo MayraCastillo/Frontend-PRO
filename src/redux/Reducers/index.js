@@ -29,6 +29,12 @@ const reducer = (state, action) => {
           todos: [action.payload],
         };
 
+      case "ADD_TODAYSMENU":
+        return {
+          ...state,
+          todaysmenu: [...state.todaysmenu, action.payload],
+        };
+
       default:
         return state;
     }
