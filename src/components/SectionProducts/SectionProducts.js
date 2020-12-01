@@ -8,8 +8,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from "react-redux";
 import { modifyTodoAction } from "../../redux/Actions";
 
-import imgProduct from "../../assets/img/platoEjemplo.jpg"
-
 const useStyles = makeStyles({
     root: {
       width: '100%',
@@ -76,7 +74,7 @@ export default function SectionProducts(props) {
                         <div className="card mb-6 shadow-sm">
                             <AddIcon className={classes.button} style={{ fontSize: 30}}
                              onClick={() =>addProduct(rest.idPlato, rest.nombrePlato, rest.precioPlato)}/>
-                            <img className={classes.root} src={imgProduct} title={rest.nombrePlato}/>
+                            <img className={classes.root} src={rest.imgPlato} title={rest.nombrePlato}/>
                             <div className="card-body">
                                 <h4><b>{rest.nombrePlato}</b></h4>
                                 <p className="card-text">{rest.descPlato}</p>

@@ -77,6 +77,8 @@ export default function CardOrder() {
 	const [data, setData] = useState([]);
 	const [cart, setCart] = useState([]);
 	const [modalConfirmOrder, setModalConfirmOrder] = useState(false);
+	const [modalInfoProduct, setModalInfoProduct] = useState(false);
+	const [productSelect, setProductSelect] = useState([]);
 	const todos = useSelector((state) => state.todos);
 	const dispatch = useDispatch();
 
@@ -113,7 +115,7 @@ export default function CardOrder() {
 		var authOptions = {
 			method: 'POST',
 			url: urlPostAddProducts,
-			data: { precio: costProduct, idPlato: idProduct },
+			data: { precio: costProduct, idPlato: Number.parseInt(idProduct) },
 			json: true,
 		};
 		Axios(authOptions)
@@ -129,6 +131,7 @@ export default function CardOrder() {
 	//Reduce en una Unidad los Productos del Carrito
 	const postReduceProducts = (idProduct) => {
 		var urlPostReduceProducts = baseURL + `/carrito/` + idProduct;
+		console.log(urlPostReduceProducts);
 		var authOptions = {
 			method: 'POST',
 			url: urlPostReduceProducts,
@@ -148,6 +151,7 @@ export default function CardOrder() {
 	//Elimina Todas las Unidades de un Producto del Carrito
 	const deleteProductCart = async (idProduct) => {
 		const urlDeleteProductsCart = baseURL + `/carrito/` + idProduct;
+		console.log(urlDeleteProductsCart);
 		await Axios.delete(urlDeleteProductsCart).then((res) => {
 			//console.log(res);
 			console.log(res.data);
@@ -188,8 +192,19 @@ export default function CardOrder() {
 		openOrCloseConfirmOrderModal()
 	};
 
+	const viewProductSelect = (product, tipo) =>{
+		setProductSelect(product);
+		console.log(product);
+		console.log(productSelect)
+		tipo === 'plato-especial' ? openOrCloseInfoProduct() : openOrCloseConfirmOrderModal();
+	}
+
 	const openOrCloseConfirmOrderModal = () => {
 		setModalConfirmOrder(!modalConfirmOrder);
+	};
+
+	const openOrCloseInfoProduct = () => {
+		setModalInfoProduct(!modalInfoProduct);
 	};
 
 	const bodyConfirmOrder = (
@@ -207,6 +222,20 @@ export default function CardOrder() {
 					Confirmar
 				</Button>
 				<Button onClick={() => openOrCloseConfirmOrderModal()}>Cancelar</Button>
+			</div>
+		</div>
+	);
+
+	const bodyInfoProduct = (
+		<div className={styles.modal}>
+			<h5>Información del Porducto</h5>
+			<br />
+			<br />
+			<h5 value={productSelect.nombrePlato}> </h5>
+			<br />
+			<br />
+			<div align="right">
+				<Button onClick={() => openOrCloseInfoProduct()}>Aceptar</Button>
 			</div>
 		</div>
 	);
@@ -251,7 +280,7 @@ export default function CardOrder() {
 											<CheckCircleIcon
 												color="secundary"
 												onClick={() =>
-													postAddProducts(todo.idProduct, todo.costProduct)
+													postAddProducts(Number.parseInt(todo.idProduct), todo.costProduct)
 												}
 											/>
 										</TableCell>
@@ -286,7 +315,7 @@ export default function CardOrder() {
 												onClick={() => postReduceProducts(product.idProduct)}
 											/>
 										</TableCell>
-										<TableCell align="left"> {product.nameProduct} </TableCell>
+										<TableCell align="left" button onClick={() => viewProductSelect(product, "plato-especial")}> {product.nameProduct} </TableCell>
 										<TableCell align="left"> {product.subTotalProduct} </TableCell>
 										<TableCell align="right" >
 											<ClearIcon
@@ -331,6 +360,10 @@ export default function CardOrder() {
 
 			<Modal open={modalConfirmOrder} onClose={openOrCloseConfirmOrderModal}>
 				{bodyConfirmOrder}
+			</Modal>
+
+			<Modal open={modalInfoProduct} onClose={openOrCloseInfoProduct}>
+				{bodyInfoProduct}
 			</Modal>
 		</Card>
 	);
