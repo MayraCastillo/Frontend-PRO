@@ -22,23 +22,23 @@ export default function Orders() {
     return(<>
         <Menu />
         <Header />
-        <main role="main" className="containerBase">
-        <Provider store={store}>
-            <Stepper /><br/><br/>
-            <div className={classes.justify}>
-            <GridContainer>
-                <GridItem xs={12} sm={12} md={8}>
-                    <Tabs />
-                </GridItem>
-
-                <GridItem xs={12} sm={12} md={4}>
-                    <GridItem>
-                        <CardOrder />
+        <main role="main" className="container-base">
+            <Provider store={store}>
+                <Stepper /><br/><br/>
+                <div className={classes.justify}>
+                <GridContainer>
+                    <GridItem xs={12} sm={12} md={8}>
+                        <Tabs />
                     </GridItem>
-                </GridItem>
-            </GridContainer>
-            </div>
-        </Provider>
+
+                    <GridItem xs={12} sm={12} md={4}>
+                        <GridItem>
+                            <CardOrder />
+                        </GridItem>
+                    </GridItem>
+                </GridContainer>
+                </div>
+            </Provider>
         </main>
         <Footer />
     </>)

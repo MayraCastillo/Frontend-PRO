@@ -7,7 +7,7 @@ import GridContainer from "../Grid/GridContainer";
 import { Provider } from "react-redux";
 import { store } from "../../redux/Store";
 import { useDispatch, useSelector } from "react-redux";
-import { modifyTodoAction } from "../../redux/Actions";
+import { modifyTodoAction, deleteTodaysMenuAction, addTodosTodaysMenuAction } from "../../redux/Actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,11 +20,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function VerticalTabs(props) {
+/**
+ * En esta funcion se establece el menu del dia del restaurante especifico que fue seleccionado
+ * anteriomente por el cliente, determinando 4 secciones, cada una correspondiente a una categoria
+ * a la que pertenece cada opcion, siendo estas: Sopas, Principios, Proteinas y Ensaladas.
+ */
+export default function VerticalTabs() {
   const classes = useStyles();
   const todos = useSelector((state) => state.todos);
+  const todaysMenu = useSelector((state) => state.todaysmenu)
   const dispatch = useDispatch();
 
+  /**
+   * Agrega en una constante/estado global la informacion del menu del dia seleccionado por el cliente.
+   */
   const addProduct=()=>{
     let newTodo = { 
         id: todos.length, 
@@ -33,6 +42,11 @@ export default function VerticalTabs(props) {
         costProduct: 6000,
     };
     dispatch(modifyTodoAction(newTodo));
+    dispatch(addTodosTodaysMenuAction(todaysMenu));
+    dispatch(deleteTodaysMenuAction(0));
+    dispatch(deleteTodaysMenuAction(1));
+    dispatch(deleteTodaysMenuAction(2));
+    dispatch(deleteTodaysMenuAction(3));
 };
 
   return (

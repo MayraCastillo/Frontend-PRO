@@ -47,7 +47,7 @@ export default function SimpleMenu() {
 	};
   
     return (
-        <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <nav className="navbar navbar-expand-md navbar-dark fixed-top">
             <NavLink to="/inicio" className="navbar-brand">PRO</NavLink>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>

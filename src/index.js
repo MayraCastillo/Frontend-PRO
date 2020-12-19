@@ -20,12 +20,13 @@ import { RedirectRoute } from './components/PrivateRoutes/RedirectRoute.js';
 //import ReactNotification from 'react-notifications-component';
 //import 'react-notifications-component/dist/theme.css'
 
-import Home from './views/Home/Home';
-import AboutUs from './views/AboutUs/AboutUs';
-import ContactUs from './views/ContactUs/ContactUs';
+import Home from './views/Client/Home/Home';
+import AboutUs from './views/Client/AboutUs/AboutUs';
+import ContactUs from './views/Client/ContactUs/ContactUs';
 import Orders from './views/Client/Orders/Orders';
 import Restaurants from './views/Client/Restaurants/Restaurants';
 import CheckIn from './views/Client/CheckIn/CheckIn';
+import WaitingShift from './views/Client/WaitingShift/WaitingShift';
 
 const hist = createBrowserHistory();
 
@@ -59,12 +60,13 @@ const switchRoutes = (
 
 		<RedirectRoute exact path="/" component={Admin} />
 		<ProtetedRoute exact path="/login" component={Login} />
-		<Route exact path="/cliente/restaurantes" component={Restaurants} />
-		<Route exact path="/cliente/restaurantes/productos" component={Orders} />
-		<Route exact path="/cliente/restaurantes/productos/factura" component={CheckIn} />
-
-		<Route path="/nosotros" component={AboutUs} />
-		<Route path="/contacto" component={ContactUs} />
+		<Route exact path="/inicio" component={Home} />
+		<Route exact path="/nosotros" component={AboutUs} />
+		<Route exact path="/contacto" component={ContactUs} />
+		<Route exact path="/restaurantes" component={Restaurants} />
+		<Route exact path="/restaurantes/productos" component={Orders} />
+		<Route exact path="/restaurantes/productos/factura" component={CheckIn} />
+		<Route exact path="/restaurantes/productos/factura/turno-de-espera" component={WaitingShift} />
 	</Switch>
 );
 ReactDOM.render(

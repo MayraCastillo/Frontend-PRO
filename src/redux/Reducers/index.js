@@ -35,6 +35,24 @@ const reducer = (state, action) => {
           todaysmenu: [...state.todaysmenu, action.payload],
         };
 
+      case "MODIFY_TODAYSMENU":
+        return {
+          ...state,
+          todaysmenu: [action.payload],
+        };
+
+      case "DELETE_TODAYSMENU":
+        return {
+          ...state,
+          todaysmenu: state.todaysmenu.filter((todaymenu) => todaymenu.id !== action.payload),
+        };
+
+      case "ADD_TODOSTODAYSMENU":
+        return {
+          ...state,
+          todostodaysmenu: [...state.todostodaysmenu, action.payload],
+        };
+
       default:
         return state;
     }

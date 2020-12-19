@@ -20,9 +20,9 @@ import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ClearIcon from '@material-ui/icons/Clear';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-
 import { useDispatch, useSelector } from "react-redux";
 import { modifyTodoAction } from "../../redux/Actions";
+import TodaysMenu from "../TodaysMenu/TodaysMenu"
 
 const useStyles = makeStyles((theme) => ({
 	modal: {
@@ -32,9 +32,31 @@ const useStyles = makeStyles((theme) => ({
 		border: '2px solid #000',
 		boxShadow: theme.shadows[5],
 		padding: theme.spacing(2, 4, 3),
+		borderRadius: '10px',
 		top: '50%',
 		left: '50%',
 		transform: 'translate(-50%, -50%)',
+	},
+	modalTodaysMenu: {
+		position: 'absolute',
+		width: 500,
+		backgroundColor: theme.palette.background.paper,
+		border: '2px solid #000',
+		boxShadow: theme.shadows[5],
+		padding: theme.spacing(2, 4, 3),
+		borderRadius: '10px',
+		top: '50%',
+		left: '50%',
+		transform: 'translate(-50%, -50%)',
+	},
+	imgTodaysMenuRoot: {
+		width: '50%',
+		float: 'left',
+		marginBottom: '20px',
+		marginRight: '20px',
+	},
+	imgRoot: {
+		width: '100%',
 	},
 	root: {
 		minWidth: 275,
@@ -66,10 +88,18 @@ const useStyles = makeStyles((theme) => ({
 
 const baseURL = `http://localhost:8094/compras`;
 
-function createData(idProduct, nameProduct, costProduct, quantityProduct, subTotalProduct) {
-	return {idProduct, nameProduct, costProduct, quantityProduct, subTotalProduct};
+function createData(idProduct, categoryProduct, nameProduct, imageProduct, descProduct, costProduct, quantityProduct, subTotalProduct) {
+	return {idProduct, categoryProduct, nameProduct, imageProduct, descProduct, costProduct, quantityProduct, subTotalProduct};
 }
 
+
+/**
+ * En esta funcion se establece el pedido que el cliente va realizando segun su interaccion con la
+ * aplicacion, permitiendole visualizar los productos seleccionados, el precio y la información
+ * correspondiente, su cantidad y el total a pagar de la factura. Ademas, cuenta con una seccion
+ * donde el cliente puede realizar observaciones o aclaraciones con respecto a su pedido para que
+ * el restaurant elo tenga en cuenta al momento de realizar la orden.
+ */
 export default function CardOrder() {
 
 	const styles = useStyles();
@@ -77,13 +107,17 @@ export default function CardOrder() {
 	const [data, setData] = useState([]);
 	const [cart, setCart] = useState([]);
 	const [modalConfirmOrder, setModalConfirmOrder] = useState(false);
-	const [modalInfoProduct, setModalInfoProduct] = useState(false);
+	const [modalInfoTodaysMenu, setModalInfoTodaysMenu] = useState(false);
+	const [modalInfoProductEspecial, setModalInfoProductEspecial] = useState(false);
 	const [productSelect, setProductSelect] = useState([]);
 	const todos = useSelector((state) => state.todos);
 	const dispatch = useDispatch();
 
-
-	//Recupera el Carrito Actual
+	/**
+	 * Realiza una solicitud GET a la base de datos, recuperando toda la nformacion correspondiente
+	 * al pedido (Carrito) que el cliente esta realizando. Sin embargo, de aquella peticion, solo se
+	 * guarda la informacion de interes correspondiente al pedido (informacion de los platos y el subtotal)
+	 */
 	const getCurrentCart = async () => {
 		let urlGetCurrentCart = baseURL + '/carrito';
 		await Axios.get(urlGetCurrentCart)
@@ -93,7 +127,10 @@ export default function CardOrder() {
 			for (const index in response.data.atrListaItems) {
 				let productAux = createData(
 								response.data.atrListaItems[index].atrIdPlato,
+								response.data.atrListaItems[index].objplato.categoriaPlato,
 								response.data.atrListaItems[index].objplato.nombrePlato,
+								response.data.atrListaItems[index].objplato.imgPlato,
+								response.data.atrListaItems[index].objplato.descPlato,
 								response.data.atrListaItems[index].atrPrecio,
 								response.data.atrListaItems[index].atrCantidad,
 								response.data.atrListaItems[index].atrSubtotal
@@ -109,7 +146,12 @@ export default function CardOrder() {
 		});
 	};
 
-	//Agrega en una Unidad los Productos del Carrito
+	/**
+	 * Se realiza una solicitud POST a la base de datos mediante la cual se aumenta en uno
+	 * la cantidad de un producto especifico, el cual hace parte del pedido del cliente.
+	 * @param {*ID del producto que se desea aumentar en cantidad al pedido} idProduct 
+	 * @param {*PRECIO del producto que se desea aumentar en cantidad al pedido} costProduct 
+	 */
 	const postAddProducts = (idProduct, costProduct) => {
 		var urlPostAddProducts = baseURL + `/carrito/` + costProduct + `/` + idProduct;
 		var authOptions = {
@@ -128,7 +170,11 @@ export default function CardOrder() {
 		getCurrentCart();
 	};
 
-	//Reduce en una Unidad los Productos del Carrito
+	/**
+	 * Se realiza una solicitud POST a la base de datos mediante la cual se reduce en uno
+	 * la cantidad de un producto especifico, el cual hace parte del pedido del cliente.
+	 * @param {*ID del producto que se desea reducir en cantidad al pedido} idProduct 
+	 */
 	const postReduceProducts = (idProduct) => {
 		var urlPostReduceProducts = baseURL + `/carrito/` + idProduct;
 		console.log(urlPostReduceProducts);
@@ -148,7 +194,11 @@ export default function CardOrder() {
 		getCurrentCart();
 	};
 
-	//Elimina Todas las Unidades de un Producto del Carrito
+	/**
+	 * Se realiza una solicitud DELETE a la base de datos mediante la cual se eliminan todas
+	 * las unidades de un producto especifico, el cual hace parte del pedido del cliente.
+	 * @param {*ID del producto que se desea eliminar por completo del pedido} idProduct 
+	 */
 	const deleteProductCart = async (idProduct) => {
 		const urlDeleteProductsCart = baseURL + `/carrito/` + idProduct;
 		console.log(urlDeleteProductsCart);
@@ -159,7 +209,10 @@ export default function CardOrder() {
 		getCurrentCart();
 	};
 
-	//Limpia el Carrito
+	/**
+	 * Se realiza una solicitud DELETE a la base de datos mediante la cual se eliminan todo
+	 * el pedido del cliente, limpiando por completo el carrito de compras.
+	 */
 	const deleteEmptyCart = async () => {
 		const urlDeleteEmptyCart = baseURL + `/limpiar-carrito`;
 		await Axios.delete(urlDeleteEmptyCart).then((res) => {
@@ -171,7 +224,11 @@ export default function CardOrder() {
 		getCurrentCart();
 	};
 
-	//Confirmar el Pedido
+	/**
+	 * Mediante una solicitud POST a la base de datos se confirma la orden o pedido realizado
+	 * por el cliente, enviando como parametros el identificador (ID) del cliente y el identificador
+	 * (NIT)) del restaurante al que se realizo el pedido.
+	 */
 	const postConfirmOrder = () => {
 		const idClient = parseInt(localStorage.getItem('idUsuario'),10);
 		var urlPostConfirmOrder = baseURL + `/factura/` + idClient+`/`+localStorage.getItem('idRestSelect');
@@ -189,24 +246,86 @@ export default function CardOrder() {
 				console.log(error);
 			});
 		console.log(authOptions)
-		openOrCloseConfirmOrderModal()
+		openOrCloseConfirmOrderModal();
 	};
 
-	const viewProductSelect = (product, tipo) =>{
+	/**
+	 * Permite la visualizacion de un "Modal" en el cual se muestra la informacion (nombre, precio
+	 * categoria, imagen, descripcion y cantidad) del producto seleccionado
+	 * @param {*Producto seleccionado} product 
+	 */
+	const viewProductSelect = (product) =>{
 		setProductSelect(product);
-		console.log(product);
-		console.log(productSelect)
-		tipo === 'plato-especial' ? openOrCloseInfoProduct() : openOrCloseConfirmOrderModal();
+		product.categoryProduct === 'menu-del-dia' ? openOrCloseInfoTodaysMenu() : openOrCloseInfoProductEspecial();
 	}
 
+	/**
+	 * Permite la visualizacion de la informacion de un plato especial.
+	 * Si la informacion ya se encuentra visualizada, la oculta.
+	 */
+	const openOrCloseInfoProductEspecial = () => {
+		setModalInfoProductEspecial(!modalInfoProductEspecial);
+	};
+
+	/**
+	 * Permite la visualizacion de la informacion de los menu del dia que se han realizado hasta el momento.
+	 * Si la informacion ya se encuentra visualizada, la oculta.
+	*/
+	const openOrCloseInfoTodaysMenu = () => {
+		setModalInfoTodaysMenu(!modalInfoTodaysMenu);
+	};
+
+	/**
+	 * Mnensaje de confirmacion de la orden realizada por el cliente.
+	 * Nota: Una vez aceptada la cofnirmacion, el pedido no puede ser modificado. 
+	 */
 	const openOrCloseConfirmOrderModal = () => {
 		setModalConfirmOrder(!modalConfirmOrder);
 	};
 
-	const openOrCloseInfoProduct = () => {
-		setModalInfoProduct(!modalInfoProduct);
-	};
+	/**
+	 * Modal en el que se visualiza la informacion (nombre, precio, descripcion, cantidad) de los
+	 * menus del dia solicidados o agregados a la orden del cliente.
+	 */
+	const bodyInfoTodaysMenu = (
+		<div className={styles.modalTodaysMenu}>
+			<p> {productSelect.categoryProduct} </p>
+			<h4> {productSelect.nameProduct} </h4>
+			<img className={classes.imgTodaysMenuRoot} src={productSelect.imageProduct} />
+			<p><b>Precio: </b>$ {productSelect.costProduct} c/u</p>
+			<p><b>Cantidad: </b>{productSelect.quantityProduct}</p>
+			<p><b>SubTotal: </b>$ {productSelect.subTotalProduct}</p>
+			<TodaysMenu />
+			<br />
+			<div align="right">
+				<Button onClick={() => openOrCloseInfoTodaysMenu()}>Aceptar</Button>
+			</div>
+		</div>
+	);
 
+	/**
+	 * Modal en el que se visualiza la informacion (nombre, precio, descripcion, cantidad) de los
+	 * productos especiales solicidados o agregados a la orden del cliente.
+	 */
+	const bodyInfoProductEspecial = (
+		<div className={styles.modal}>
+			<p> {productSelect.categoryProduct} </p>
+			<h4> {productSelect.nameProduct} </h4>
+			<img className={classes.imgRoot} src={productSelect.imageProduct} />
+			<p> {productSelect.descProduct} </p>
+			<p><b>Precio: </b>$ {productSelect.costProduct} c/u</p>
+			<p><b>Cantidad: </b>{productSelect.quantityProduct}</p>
+			<p><b>SubTotal: </b>$ {productSelect.subTotalProduct}</p>
+			<br />
+			<div align="right">
+				<Button onClick={() => openOrCloseInfoProductEspecial()}>Aceptar</Button>
+			</div>
+		</div>
+	);
+
+	/**
+	 * Mensaje de confirmacion de la orden realizada por el cliente
+	 */
 	const bodyConfirmOrder = (
 		<div className={styles.modal}>
 			<h5>Confirmar Pedido</h5>
@@ -216,8 +335,10 @@ export default function CardOrder() {
 			<br />
 			<br />
 			<div align="right">
-				<Button color="primary" onClick={() => postConfirmOrder()}
-				href="/cliente/restaurantes/productos/factura"
+				<Button 
+					color="primary"
+					onClick={() => postConfirmOrder()}
+					href="/restaurantes/productos/factura"
 				>
 					Confirmar
 				</Button>
@@ -226,19 +347,6 @@ export default function CardOrder() {
 		</div>
 	);
 
-	const bodyInfoProduct = (
-		<div className={styles.modal}>
-			<h5>Información del Porducto</h5>
-			<br />
-			<br />
-			<h5 value={productSelect.nombrePlato}> </h5>
-			<br />
-			<br />
-			<div align="right">
-				<Button onClick={() => openOrCloseInfoProduct()}>Aceptar</Button>
-			</div>
-		</div>
-	);
 
 	useEffect(() => {
 		deleteEmptyCart();
@@ -246,7 +354,7 @@ export default function CardOrder() {
 
 	useEffect(() => {
 		getCurrentCart()
-	},[data]);
+	},[]);
 
 	return (
 		<Card className={classes.root}>
@@ -315,7 +423,7 @@ export default function CardOrder() {
 												onClick={() => postReduceProducts(product.idProduct)}
 											/>
 										</TableCell>
-										<TableCell align="left" button onClick={() => viewProductSelect(product, "plato-especial")}> {product.nameProduct} </TableCell>
+										<TableCell align="left" button onClick={() => viewProductSelect(product)}> {product.nameProduct} </TableCell>
 										<TableCell align="left"> {product.subTotalProduct} </TableCell>
 										<TableCell align="right" >
 											<ClearIcon
@@ -358,12 +466,16 @@ export default function CardOrder() {
 				</Button>
 			</CardContent>
 
-			<Modal open={modalConfirmOrder} onClose={openOrCloseConfirmOrderModal}>
-				{bodyConfirmOrder}
+			<Modal open={modalInfoTodaysMenu} onClose={openOrCloseInfoTodaysMenu}>
+				{bodyInfoTodaysMenu}
 			</Modal>
 
-			<Modal open={modalInfoProduct} onClose={openOrCloseInfoProduct}>
-				{bodyInfoProduct}
+			<Modal open={modalInfoProductEspecial} onClose={openOrCloseInfoProductEspecial}>
+				{bodyInfoProductEspecial}
+			</Modal>
+
+			<Modal open={modalConfirmOrder} onClose={openOrCloseConfirmOrderModal}>
+				{bodyConfirmOrder}
 			</Modal>
 		</Card>
 	);

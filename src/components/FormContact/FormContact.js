@@ -1,6 +1,9 @@
 import React from 'react';
 import '../../assets/css/App.css';
 
+/**
+ * Formulario para ponerse en contacto con el grupo de trabajo que desarrollo la aplicacion.
+ */
 export default function FormContact() {
   
     return (

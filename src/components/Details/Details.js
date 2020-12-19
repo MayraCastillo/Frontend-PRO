@@ -1,5 +1,9 @@
 import React from 'react';
 
+/**
+ * Seccion correpondiente al objetivo, mision y vision de la empresa o grupo de trabajo
+ * que desarrollo la aplicacion web PRO (Project Restaurant Online).
+ */
 export default function Details() {
   
     return (

@@ -106,16 +106,16 @@ export default function GestionPlatos() {
 		//console.log(dataNueva);
 		console.log(authOptions);
 		await Axios(authOptions)
-			.then(function (response) {
-				//setLoading(false);
+		.then(function (response) {
+			//setLoading(false);
 
-				toast.success('Se actualizó el plato');
-				//console.log("1")
-			})
+			toast.success('Se actualizó el plato');
+			//console.log("1")
+		})
 			.catch(function (error) {
-				//setLoading(false);
-				//console.log("2")
-			});
+			//setLoading(false);
+			//console.log("2")
+		});
 	};
 
 	const abrirCerrarModalEditar = () => {
@@ -237,6 +237,7 @@ export default function GestionPlatos() {
 			</div>
 		</div>
 	);
+
 	const peticionDelete = async (nombre) => {
 		const baseUrlDelete =
 			`http://localhost:8091/platos/eliminar-plato` +
@@ -253,6 +254,7 @@ export default function GestionPlatos() {
 			toast.success('Se eliminó ' + nombre + ' del Menú');
 		});
 	};
+	
 	const bodyEliminar = (
 		<div className={styles.modal}>
 			<p>

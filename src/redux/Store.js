@@ -13,6 +13,8 @@ const initialState = {
   ],
 
   todaysmenu: [],
+
+  todostodaysmenu: [],
 };
 
 export const store = createStore(

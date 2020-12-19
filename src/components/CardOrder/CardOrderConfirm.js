@@ -50,6 +50,12 @@ function createData(idProduct, nameProduct, costProduct, quantityProduct, subTot
 	return {idProduct, nameProduct, costProduct, quantityProduct, subTotalProduct};
 }
 
+/**
+ * En esta funcion se visualiza el pedido que el cliente ha realizado anteriomente,
+ * permitiendole observar los productos seleccionados, el precio y su cantidad, junto 
+ * al total a pagar de la factura y las observaciones o aclaraciones realizadas por el 
+ * cliente con respecto a su pedido.
+ */
 export default function CardOrderConfirm() {
 
 	const styles = useStyles();
@@ -57,7 +63,10 @@ export default function CardOrderConfirm() {
 	const [data, setData] = useState([]);
 	const [cart, setCart] = useState([]);
 
-	//Recupera el Carrito Actual
+	/**
+	 * Realiza una solicitud GET a la base de datos, recuperando toda la nformacion correspondiente
+	 * al pedido (Carrito) que el cliente ha realizado anteriormente.
+	*/
 	const getCurrentCart = async () => {
 		let urlGetCurrentCart = baseURL + '/carrito';
 		await Axios.get(urlGetCurrentCart)
@@ -84,7 +93,7 @@ export default function CardOrderConfirm() {
 
 	useEffect(() => {
 		getCurrentCart()
-	},[data]);
+	},[]);
 
 	return (
 		<Card className={classes.root}>

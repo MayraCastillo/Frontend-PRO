@@ -1,9 +1,8 @@
 import React from 'react';
  
-import Menu from '../../components/Menu/Menu';
-import Form from '../../components/FormContact/FormContact';
-import Map from '../../components/Map/Map';
-import Footer from '../../components/Footer/Footer';
+import Menu from '../../../components/Menu/Menu';
+import Form from '../../../components/FormContact/FormContact';
+import Map from '../../../components/Map/Map';
 
 export default function ContactUs() {
   
@@ -23,6 +22,5 @@ export default function ContactUs() {
                 </div>
             </div>
         </main>
-        <Footer />
     </>)
 }

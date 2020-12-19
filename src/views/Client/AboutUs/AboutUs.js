@@ -1,9 +1,9 @@
 import React from 'react';
  
-import Menu from '../../components/Menu/Menu';
-import Jumbotron from '../../components/Jumbotron/Jumbotron'; 
-import Details from '../../components/Details/Details'; 
-import Footer from '../../components/Footer/Footer';
+import Menu from '../../../components/Menu/Menu';
+import Jumbotron from '../../../components/Jumbotron/Jumbotron'; 
+import Details from '../../../components/Details/Details'; 
+import Footer from '../../../components/Footer/Footer';
 
 export default function AboutUs() {
   

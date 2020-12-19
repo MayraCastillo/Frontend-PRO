@@ -21,6 +21,12 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
+/**
+ * En esta funcion se establece la carta del restaurante especifico que fue seleccionado anteriomente
+ * por el cliente, determinando 5 secciones, cada una correspondiente a la categoria a la que
+ * pertenece cada producto, siendo estas: Menu del dia, Platos Especiales, Bebidas, Porstes y 
+ * Promociones Especiales.
+ */
 export default function SimpleAccordion() {
 	const classes = useStyles();
 	const idSelectRest = localStorage.getItem('idRestSelect');

@@ -24,6 +24,10 @@ const rows = [
     createData('Sábado', '11:00 - 02:30'),
 ];
 
+/**
+ * Seccion que le permite al cliente visualizar la informacion del restaurante que ha seleccionado anteriormente.
+ * Facilitando, los horarios de atencion, la ubicación del restaurante y sus numeros de contacto.
+ */
 export default function Details() {
   
     return (

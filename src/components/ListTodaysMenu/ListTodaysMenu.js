@@ -22,6 +22,11 @@ const useStyles = makeStyles((theme) => ({
 
 const baseURL =`http://localhost:8091/platos/semanario/buscar-por-dia/`;
 
+/**
+ * Se muestra la informacion de la posible opcion, dependiendo de la categoria (Sopa, Principio,
+ * Proteina o Ensadala), que el cliente puede seleccionar para completar su menu del dia.
+ * @param {*Categoria del producto del que se mostrara la informacion} props 
+ */
 export default function ListDividers(props) {
   const classes = useStyles();
   const [data, setData] = useState([]);
@@ -32,7 +37,10 @@ export default function ListDividers(props) {
     getSemRestCat();
   },[])
 
-  //Recupera el semanario del dia segun el restaurante y la categoria del producto
+  /**
+   * Realiza una peticion GET a la base de datos, mediante la cual recupera el semanario del dia
+   * segun el restaurant y la categoria a la que corresponde el producto.
+   */
 	const getSemRestCat = () => {
 
     var urlGetSemRestCat = baseURL+localStorage.getItem('idRestSelect')+`?categoria=`+props.categoria;
@@ -47,11 +55,14 @@ export default function ListDividers(props) {
 		});
 	};
 
+  /**
+   * Agrega el nombre de la opcion, segun la categoria, seleccionada o elegida por el cliente,
+   * la cual conformara parte del menude dia, a una variable/estado global de la aplicacion
+   * @param {*Nombre del producto segun la categoria seleccionado} nameTodaysMenu 
+   */
   const addTodaysMenu = (nameTodaysMenu) => {
     let newTodaysMenu = { id: todaysMenu.length, name: nameTodaysMenu };
     dispatch(addTodaysMenuAction(newTodaysMenu));
-    document.getElementById('btnPrueba').innerHTML = "false";
-    //document.getElementById('btnPrueba').disabled = false;
   };
 
   return (
@@ -59,7 +70,7 @@ export default function ListDividers(props) {
       <div className="row">
         {data.map(rest=>(
           <div className="col-md-6"  key={rest.id}>
-            <ListItem id="btnPrueba" button onClick={() => addTodaysMenu(rest.nombrePlato)}>
+            <ListItem button onClick={() => addTodaysMenu(rest.nombrePlato)}>
               <img 
                 className="bd-placeholder-img rounded-circle"
                 width="45"

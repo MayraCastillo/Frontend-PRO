@@ -13,15 +13,15 @@ const useStyles = makeStyles((theme) => ({
     justify: {
         textAlign: "justify",
     },
-  }));
+}));
 
 export default function Orders() {
     const classes = useStyles();
     return(<>
         <Menu />
         <Header />
-        <main role="main" className="containerBase">
-            <Stepper /><br/><br/>
+        <main role="main" className="container-base">
+            <Stepper /><br/>
             <div className={classes.justify}>
             <GridContainer>
                 <GridItem xs={12} sm={12} md={8}>

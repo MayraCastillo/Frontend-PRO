@@ -92,7 +92,7 @@ export default function SignIn() {
 					setPassword('');
 
 					if (localStorage.getItem('token') == '1') {
-						window.location.href = '/cliente/restaurantes';
+						window.location.href = '/inicio';
 					} else {
 						window.location.href = '/';
 					}

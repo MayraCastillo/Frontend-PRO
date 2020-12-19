@@ -20,6 +20,21 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
+
+	cardHeader: {
+		width: '95%',
+		margin: 'auto',
+		marginTop: '-20px',
+        color: 'white',
+		background: '-webkit-linear-gradient( 95deg, rgb(3,92,107) 0%, rgb(23,162,184) 50%, rgb(56,204,227) 100%)',
+	},
+
+    button: {
+		color: 'white',
+		marginLeft: '-20px',
+		background: '-webkit-linear-gradient( 95deg, rgb(3,92,107) 0%, rgb(23,162,184) 50%, rgb(56,204,227) 100%)',
+	},
+
     formControl: {
         margin: theme.spacing(1),
         minWidth: 120,
@@ -59,7 +74,14 @@ const useStyles = makeStyles((theme) => ({
 
 const baseURL = `http://localhost:8094/compras`;
 
-export default function AgregarPlato() {
+function createData(nameUser, lastNameUser, idUser, telephoneUser, addressUser) {
+	return {nameUser, lastNameUser, idUser, telephoneUser, addressUser};
+}
+
+/**
+ * Formulario final para que el usuario complete de manera exitosa su pedido
+ */
+export default function SectionCheckIn() {
     
 	const classes = useStyles();
 	const [data, setData] = useState([]);
@@ -71,17 +93,27 @@ export default function AgregarPlato() {
         setState({ ...state, [event.target.name]: event.target.checked });
 	};
 	
-	//Recupera todas las facturas
-	const getFacturas = async () => {
-		let urlGetCurrentCart = baseURL + '/facturas';
-		await Axios.get(urlGetCurrentCart)
+	/**
+	 * Recupera todas las facturas pertenecientes a ese restaurante, seleccionando unicamente la 
+	 * ultima, que coresponderia al pedido u orden, realizado por el cliente actual.
+	 */
+	const getFacturas = () => {
+		let urlGetFacturas = baseURL + '/facturas/'+localStorage.getItem('idRestSelect');
+		 Axios.get(urlGetFacturas)
 			.then((response) => {
-				console.log(response.data)
-				setData(response.data)
+				let indice = response.data.length-1;
+				let usuarioAux = createData(
+					response.data[indice].objCliente.nombresCliente,
+					response.data[indice].objCliente.apellidosCliente,
+					response.data[indice].objCliente.idCliente,
+					response.data[indice].objCliente.telefonoCliente,
+					response.data[indice].objCliente.direccionCliente
+				)
+				setData(usuarioAux)
 			})
 			.catch((error) => {
 				console.log(error);
-			});
+		});
 	};
 
 	useEffect(() => {
@@ -94,7 +126,7 @@ export default function AgregarPlato() {
 			<GridContainer>
 				<GridItem xs={12} sm={12} md={12}>
 					<Card>
-						<CardHeader color="primary">
+						<CardHeader  className={classes.cardHeader}>
 							<h4 className={classes.cardTitleWhite}>Finaliza tu Pedido</h4>
 						</CardHeader>
 						<CardBody>
@@ -110,8 +142,9 @@ export default function AgregarPlato() {
 										fullWidth
 										label="Nombre Completo"
                                         variant="outlined"
-                                        size="small"
-										//onChange={(e) => setNombrePlato(e.target.value)}
+										size="small"
+										onChange={handleChange}
+										value={data.nameUser + " " + data.lastNameUser}
 									/>
 								</GridItem>
 
@@ -124,7 +157,8 @@ export default function AgregarPlato() {
 										label="Documento/Cédula"
                                         variant="outlined"
                                         type="number"
-                                        size="small"
+										size="small"
+										value={""+data.idUser}
 										//onChange={(e) => setCategoriaPlato(e.target.value)}
 									/>
 								</GridItem>
@@ -138,7 +172,8 @@ export default function AgregarPlato() {
                                         label="Telefono"
                                         type="number"
                                         variant="outlined"
-                                        size="small"
+										size="small"
+										value={""+data.telephoneUser}
 										//onChange={(e) => setCategoriaPlato(e.target.value)}
 									/>
 								</GridItem>
@@ -151,7 +186,8 @@ export default function AgregarPlato() {
 										fullWidth
 										label="Dirección"
                                         variant="outlined"
-                                        size="small"
+										size="small"
+										value={""+data.addressUser}
 										//onChange={(e) => setDescPlato(e.target.value)}
 									/>
 								</GridItem>
@@ -214,7 +250,7 @@ export default function AgregarPlato() {
                                             label="Mes"
                                         >
                                         <MenuItem value="">
-                                            <em>None</em>
+                                            <em></em>
                                         </MenuItem>
                                             <MenuItem value={10}>Enero</MenuItem>
                                             <MenuItem value={20}>Febrero</MenuItem>
@@ -235,7 +271,7 @@ export default function AgregarPlato() {
                                             label="Año"
                                         >
                                         <MenuItem value="">
-                                            <em>None</em>
+                                            <em></em>
                                         </MenuItem>
                                             <MenuItem value={10}>2020</MenuItem>
                                             <MenuItem value={20}>2021</MenuItem>
@@ -303,15 +339,18 @@ export default function AgregarPlato() {
                                             checked={state.checkedTermsConds}
                                             onChange={handleChange}
                                         />
-                                        }
+										}
                                         label="He leído y estoy de acuerdo con los Términos y Condiciones y con las Políticas y tratamiento de datos personales."
                                     />
 								</GridItem>
 
                                 <GridItem xs={12} sm={12} md={2}>
                                     <br/>
-                                    <Button color="primary">
-                                        Enviar Pedido
+									<Button 
+										className={classes.button}
+										href="/restaurantes/productos/factura/turno-de-espera"
+									>
+                                        Realizar Pedido
                                     </Button>
                                 </GridItem>
 							</GridContainer>
